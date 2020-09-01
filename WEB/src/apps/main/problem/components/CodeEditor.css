@@ -1,0 +1,6 @@
+.offsetSelect {
+    margin-left: 3rem;
+    padding: 0.25rem;
+    }
+
+select option:first-child { color: grey; }

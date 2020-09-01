@@ -1,0 +1,101 @@
+.HomeImage {
+  height: 500px;
+  overflow: hidden;
+  padding: 0px !important; 
+}
+
+.p-card{
+  margin-top: 1rem;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  padding-top: 1rem !important;
+  padding-bottom: 0rem !important;
+}
+
+
+.p-image{
+  padding-left: 0rem !important;
+  padding-right: 0rem !important;
+  padding-top: 1rem !important;
+  padding-bottom: 0rem !important;
+}
+
+.p-0{
+  padding: 0rem !important; 
+}
+
+.m-2{
+  margin: 1rem;
+}
+
+.strong {
+  font-weight: bolder;
+}
+
+.problem{
+  min-width: 595px;
+  flex-wrap: nowrap;
+
+}
+
+.editor{
+  min-width: 650px;
+  overflow: hidden;
+}
+
+.resultWin{
+  color:green;
+  vertical-align: middle !important;
+  text-align: center;
+}
+
+.resultLose{
+  color:red;
+  vertical-align: middle !important;
+  text-align: center;
+}
+
+.modal{
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: 'absolute';
+	background-color: black;
+
+}
+
+.center{
+  margin-left: 15px;
+}
+
+.tb{
+  vertical-align: middle !important;
+  text-align: center;
+}
+
+.cth{
+ color:black !important;
+ text-align: center;
+}
+
+.th{
+  background-color: lightgray;
+}
+
+.input{
+  max-width: 300px;
+}
+
+.input-sm{
+  max-width: 70px;
+  max-height: 24px;
+}
+
+.pl-12{
+  padding-left: 12px;
+}
+
+.mw{
+  max-width: 1300px;
+}
+
