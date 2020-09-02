@@ -8,7 +8,7 @@ const initStata = {
 const codeList = (state = initStata, action) => {
     switch(action.type){
         case SET_CODELIST:
-            return {...state, codeList:action.payload};
+            return {...state, codeList:action.payload.reverse()};
         default:
             return state;
     }
