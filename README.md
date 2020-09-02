@@ -8,8 +8,6 @@
 ![캡처](https://user-images.githubusercontent.com/17774917/83146930-ed9a4000-a131-11ea-9035-8ee1bd74d214.JPG)
 
 
-팀페이지주소 : https://kookmin-sw.github.io/capstone-2020-16/
-
 
 **알고리즘 보드게임 플랫폼 코드 온 보드(Code on board)**
 
