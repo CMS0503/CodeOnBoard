@@ -1,5 +1,8 @@
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group
 from django.db import models
+
+from onepanman_api.models import Class
+
 
 class GroupInfo(models.Model):
     """
@@ -15,26 +18,48 @@ class GroupInfo(models.Model):
         related_name="groupInfo",
     )
 
-    ranking = models.IntegerField(
-        "랭킹",
-        db_column="RANKING",
-        null=True,
+    date = models.DateTimeField(
+        "그룹 생성날짜",
+        db_column="DATE",
+        auto_now_add=True,
     )
 
-    score = models.IntegerField(
-        "점수",
-        db_column="SCORE",
-        default=0,
+    is_delete = models.BooleanField(
+        "삭제여부",
+        db_column="IS_DELETE",
+        default=False
     )
 
-    leader = models.ForeignKey(
-        User,
-        db_column="LEADER",
-        verbose_name="그룹장",
+    class_id = models.ForeignKey(
+        Class,
+        verbose_name="분반",
+        db_column="CLASS",
+        null=False,
+        blank=False,
         on_delete=models.PROTECT,
-        null=True,
-
+        related_name="group_class",
     )
+
+    # ranking = models.IntegerField(
+    #     "랭킹",
+    #     db_column="RANKING",
+    #     null=True,
+    # )
+    #
+    # score = models.IntegerField(
+    #     "점수",
+    #     db_column="SCORE",
+    #     default=0,
+    # )
+    #
+    # leader = models.ForeignKey(
+    #     User,
+    #     db_column="LEADER",
+    #     verbose_name="그룹장",
+    #     on_delete=models.PROTECT,
+    #     null=True,
+    #
+    # )
 
     def __str__(self):
         return '{}_{}_{}'.format(self.group.primary_key, self.group.name, self.ranking)

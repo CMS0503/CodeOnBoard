@@ -70,11 +70,23 @@ class Code(models.Model):
         auto_now_add=True,
     )
 
-    status = models.CharField(
-        "상태",
-        db_column="STATUS",
-        default="FAIL",
-        max_length=50,
+    # status = models.CharField(
+    #     "상태",
+    #     db_column="STATUS",
+    #     default="FAIL",
+    #     max_length=50,
+    # )
+
+    is_delete = models.BooleanField(
+        "삭제여부",
+        db_column="IS_DELETE",
+        default=False
+    )
+
+    open_code = models.IntegerField(
+        "코드 공개 여부",
+        db_column="OPEN_CODE",
+        default=0
     )
 
     def __str__(self):

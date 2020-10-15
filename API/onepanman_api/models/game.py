@@ -29,28 +29,28 @@ class Game(models.Model):
         blank=False,
     )
 
-    problem = models.ForeignKey(
-        Problem,
-        db_column='PROBLEM',
-        null=False,
-        blank=False,
-        on_delete=models.PROTECT,
-        related_name="problem_game_problem",
-    )
+    # problem = models.ForeignKey(
+    #     Problem,
+    #     db_column='PROBLEM',
+    #     null=False,
+    #     blank=False,
+    #     on_delete=models.PROTECT,
+    #     related_name="problem_game_problem",
+    # )
 
-    challenger = models.ForeignKey(
-        User,
-        db_column='CHALLENGER',
-        on_delete=models.PROTECT,
-        related_name="user_game_challenger",
-    )
-
-    opposite = models.ForeignKey(
-        User,
-        db_column='OPPOSITE',
-        on_delete=models.PROTECT,
-        related_name="user_game_opposite",
-    )
+    # challenger = models.ForeignKey(
+    #     User,
+    #     db_column='CHALLENGER',
+    #     on_delete=models.PROTECT,
+    #     related_name="user_game_challenger",
+    # )
+    #
+    # opposite = models.ForeignKey(
+    #     User,
+    #     db_column='OPPOSITE',
+    #     on_delete=models.PROTECT,
+    #     related_name="user_game_opposite",
+    # )
 
     record = models.TextField(
         '게임기록',
@@ -110,53 +110,54 @@ class Game(models.Model):
         default="no error",
     )
 
-    challenger_score = models.IntegerField(
-        "challenger_score",
-        db_column="CHALLENGER_SCORE",
-        default=500,
-    )
+    # challenger_score = models.IntegerField(
+    #     "challenger_score",
+    #     db_column="CHALLENGER_SCORE",
+    #     default=500,
+    # )
+    #
+    # opposite_score = models.IntegerField(
+    #     "opposite_score",
+    #     db_column="OPPOSITE_SCORE",
+    #     default=500,
+    # )
 
-    opposite_score = models.IntegerField(
-        "opposite_score",
-        db_column="OPPOSITE_SCORE",
-        default=500,
-    )
+    # challenger_name = models.CharField(
+    #     "challenger_name",
+    #     db_column="CHALLENGER_NAME",
+    #     default="unknown",
+    #     max_length=50,
+    # )
+    #
+    # opposite_name = models.CharField(
+    #     "opposite_name",
+    #     db_column="OPPOSITE_NAME",
+    #     default="unknown",
+    #     max_length=50,
+    # )
 
-    challenger_name = models.CharField(
-        "challenger_name",
-        db_column="CHALLENGER_NAME",
-        default="unknown",
-        max_length=50,
-    )
-
-    opposite_name = models.CharField(
-        "opposite_name",
-        db_column="OPPOSITE_NAME",
-        default="unknown",
-        max_length=50,
-    )
-
-    challenger_score_flu = models.IntegerField(
-        "challenger_score_flu",
-        db_column="CHALLENGER_SCORE_FLU",
-        default=0,
-    )
-
-    opposite_score_flu = models.IntegerField(
-        "opposite_score_flu",
-        db_column="OPPOSITE_SCORE_FLU",
-        default=0,
-    )
+    # challenger_score_flu = models.IntegerField(
+    #     "challenger_score_flu",
+    #     db_column="CHALLENGER_SCORE_FLU",
+    #     default=0,
+    # )
+    #
+    # opposite_score_flu = models.IntegerField(
+    #     "opposite_score_flu",
+    #     db_column="OPPOSITE_SCORE_FLU",
+    #     default=0,
+    # )
 
     type = models.CharField(
         "game type",
         db_column="TYPE",
         default="normal",
-        max_length=50,
+        max_length=20,
     )
 
     def __str__(self):
-        return '{}_{}_{}_{}'.format(self.id, self.problem.title, self.challenger.username,self.opposite.username)
+        return f'id_'
+        # return '{}_{}_{}_{}'.format(self.id, self.problem.title, self.challenger.username,self.opposite.username)
 
     class Meta:
         db_table = "GAME"

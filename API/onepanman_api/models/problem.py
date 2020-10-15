@@ -13,14 +13,14 @@ class Problem(models.Model):
         primary_key=True
     )
 
-    editor = models.ForeignKey(
-        User,
-        verbose_name='작성자',
-        db_column='EDITOR', 
-        primary_key=False,
-        on_delete=models.PROTECT,
-        related_name="user_problem_editor",
-    )
+    # editor = models.ForeignKey(
+    #     User,
+    #     verbose_name='작성자',
+    #     db_column='EDITOR',
+    #     primary_key=False,
+    #     on_delete=models.PROTECT,
+    #     related_name="user_problem_editor",
+    # )
 
     title = models.CharField(
         '문제이름',
@@ -83,6 +83,12 @@ class Problem(models.Model):
         "문제 규칙",
         db_column="RULE",
         default='{"obj_num": ,"placement" : , "action" : , "ending": ,}',
+    )
+
+    is_delete = models.BooleanField(
+        "삭제여부",
+        db_column="IS_DELETE",
+        default=False
     )
 
     def __str__(self):
