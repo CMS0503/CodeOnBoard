@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 from django.db import models
 
-from onepanman_api.models import Class
+# from onepanman_api.models import Class
 
 
 class GroupInfo(models.Model):
@@ -31,7 +31,7 @@ class GroupInfo(models.Model):
     )
 
     class_id = models.ForeignKey(
-        Class,
+        "onepanman_api.Class",
         verbose_name="분반",
         db_column="CLASS",
         null=False,

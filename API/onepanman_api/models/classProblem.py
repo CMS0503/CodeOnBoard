@@ -2,7 +2,8 @@ from django.db import models
 
 from onepanman_api.models import Problem, Class
 
-class classProblem(models.Model):
+
+class ClassProblem(models.Model):
     problem_id = models.ForeignKey(
         Problem,
         verbose_name="문제 ID",

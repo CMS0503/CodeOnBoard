@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from onepanman_api.models import Problem, Language
-
+# from ..models import Problem, Language
 
 class Code(models.Model):
     """

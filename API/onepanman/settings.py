@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'redis',
-
     'rest_auth',
     'rest_framework.authtoken',
     'django.contrib.sites',

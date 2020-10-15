@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import Group, User
 
-class userGroup(models.Model):
+class UserGroup(models.Model):
     user_id = models.ForeignKey(
         User,
         verbose_name="유저 ID",

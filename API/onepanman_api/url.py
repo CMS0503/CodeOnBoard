@@ -8,25 +8,17 @@ from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh
 from . import routers, views
 
 router = routers.AppRouter()
-router.register('article', views.api.article.ArticleViewSet, 'article')
-router.register('articlefull', views.api.article.ArticleCommentViewSet, 'articlefull')
 router.register('code', views.api.code.CodeViewSet, 'code')
-router.register('comment', views.api.comment.CommentViewSet, 'comment')
-router.register('friend', views.api.friend.FriendViewSet, 'friend')
 router.register('game', views.api.game.GameViewSet, 'game')
 router.register('groupInfo', views.api.GroupInfoViewSet, 'groupInfo')
 router.register('group', views.api.GroupViewSet, 'group')
 router.register('groupfullInfo', views.api.group.GroupFullInfoViewSet, 'groupfullInfo')
 router.register('language', views.api.LanguageViewSet, 'language')
-router.register('notice', views.api.NoticeViewSet, 'notice')
-router.register('testcase', views.api.TestcaseViewSet, 'testcase')
 router.register('user', views.api.UserViewSet, 'user')
 router.register('userInfo', views.api.UserInfoViewSet, 'userInfo')
 router.register('userfullInfo', views.api.user.UserFullInfoViewSet, 'userfullInfo')
-router.register('userInformationInProblem', views.api.UserInformationInProblemViewSet, 'userInformationInProblem')
 router.register('problem', views.api.problem.ProblemViewSet, 'problem')
 router.register('userInfo', views.api.userInfo.UserInfoViewSet, 'userInfo')
-router.register('rule', views.api.rule.RuleViewSet, 'rule')
 
 api_info = openapi.Info(
     title='ONEPANMAN API 문서',
