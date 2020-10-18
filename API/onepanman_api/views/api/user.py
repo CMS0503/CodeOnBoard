@@ -14,12 +14,12 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    permission_classes = [OnlyMyandAdmin]
+    # permission_classes = [OnlyMyandAdmin]
 
 
 class MyUserView(APIView):
 
-    permission_classes = [OnlyMyandAdmin]
+    # permission_classes = [OnlyMyandAdmin]
 
     def get(self, request, version):
         instance = User.objects.get(username=request.user.username)
@@ -32,7 +32,7 @@ class UserFullInfoViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserFullInfoSerializer
 
-    permission_classes = [OnlyMyandAdmin]
+    # permission_classes = [OnlyMyandAdmin]
 
 class RegisterView(RegisterView):
 

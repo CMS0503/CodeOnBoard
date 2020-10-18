@@ -16,15 +16,6 @@ class GetCoreResponse(Response):
     def close(self):
         matchInfo = self.data
 
-        # uiip objects playing...
-        challenger = matchInfo["challenger"]
-        opposite = matchInfo["opposite"]
-        problemid = matchInfo["problem"]
-        status = True
-
-        update_playing(challenger, problemid, status)
-        update_playing(opposite, problemid, status)
-
         Code.objects.all().filter(id=matchInfo["challenger_code_id"]).update(status="playing")
         Code.objects.all().filter(id=matchInfo["opposite_code_id"]).update(status="playing")
 
@@ -35,7 +26,7 @@ class GetCoreResponse(Response):
 
 
 class Match(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     # 유저와 문제정보로 상대방을 매칭하고, 매칭 정보를 반환하는 함수
     def match(self, chllenger_id, problem_id, challenger_code_id):

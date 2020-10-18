@@ -13,5 +13,5 @@ class GroupInfoViewSet(viewsets.ModelViewSet):
     queryset = GroupInfo.objects.all()
     serializer_class = GroupInfoSerializer
     
-    permission_classes = [LeaderandAdmin]
+    # permission_classes = [LeaderandAdmin]
 
