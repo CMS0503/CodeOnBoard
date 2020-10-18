@@ -30,18 +30,6 @@ class Language(models.Model):
         choices=language_choices,
     )
 
-    compileMessage = models.TextField(
-        '컴파일명령어',
-        db_column='COMPILEMESSAGE',
-        null=False,
-    )
-
-    runMessage = models.TextField(
-        '런명령어',
-        db_column='RUNMESSAGE',
-        null=False,
-    )
-
     def __str__(self):
         return self.name
 

@@ -50,13 +50,6 @@ class UserInfo(models.Model):
         default="Anonymous"
     )
 
-    heart = models.IntegerField(
-        "하트",
-        db_column="HEART",
-        null=False,
-        default=5,
-    )
-
     isCodeOpen = models.BooleanField(
         "코드공개여부",
         db_column="isCodeOpen",
@@ -86,18 +79,18 @@ class UserInfo(models.Model):
         default="media/default.jpg",
     )
 
-    tier = models.CharField(
-        "등급",
-        db_column="TIER",
-        max_length=50,
-        default="Bronze",
-    )
-
-    tier_score = models.IntegerField(
-        "등급 점수",
-        db_column="TIER_SCORE",
-        default=0,
-   )
+   #  tier = models.CharField(
+   #      "등급",
+   #      db_column="TIER",
+   #      max_length=50,
+   #      default="Bronze",
+   #  )
+   #
+   #  tier_score = models.IntegerField(
+   #      "등급 점수",
+   #      db_column="TIER_SCORE",
+   #      default=0,
+   # )
 
     #def __str__(self):
     #    return '{}_{}_{}'.format(self.user.username, self.language, self.tier)

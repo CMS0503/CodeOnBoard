@@ -8,25 +8,17 @@ from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh
 from . import routers, views
 
 router = routers.AppRouter()
-router.register('article', views.api.article.ArticleViewSet, 'article')
-router.register('articlefull', views.api.article.ArticleCommentViewSet, 'articlefull')
 router.register('code', views.api.code.CodeViewSet, 'code')
-router.register('comment', views.api.comment.CommentViewSet, 'comment')
-router.register('friend', views.api.friend.FriendViewSet, 'friend')
 router.register('game', views.api.game.GameViewSet, 'game')
 router.register('groupInfo', views.api.GroupInfoViewSet, 'groupInfo')
 router.register('group', views.api.GroupViewSet, 'group')
 router.register('groupfullInfo', views.api.group.GroupFullInfoViewSet, 'groupfullInfo')
 router.register('language', views.api.LanguageViewSet, 'language')
-router.register('notice', views.api.NoticeViewSet, 'notice')
-router.register('testcase', views.api.TestcaseViewSet, 'testcase')
 router.register('user', views.api.UserViewSet, 'user')
 router.register('userInfo', views.api.UserInfoViewSet, 'userInfo')
 router.register('userfullInfo', views.api.user.UserFullInfoViewSet, 'userfullInfo')
-router.register('userInformationInProblem', views.api.UserInformationInProblemViewSet, 'userInformationInProblem')
 router.register('problem', views.api.problem.ProblemViewSet, 'problem')
 router.register('userInfo', views.api.userInfo.UserInfoViewSet, 'userInfo')
-router.register('rule', views.api.rule.RuleViewSet, 'rule')
 
 api_info = openapi.Info(
     title='ONEPANMAN API 문서',
@@ -37,8 +29,9 @@ api_info = openapi.Info(
 )
 schema_view = get_schema_view(
     api_info,
-    public=False,
-    permission_classes=(permissions.DjangoModelPermissionsOrAnonReadOnly,),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+    # permission_classes=(permissions.DjangoModelPermissionsOrAnonReadOnly,),
 )
 
 urlpatterns = [
@@ -47,11 +40,10 @@ urlpatterns = [
     path('user/my', views.api.user.MyUserView.as_view(), name="usermy"),
     path('code/my', views.api.code.MyCodeView.as_view(), name="codemy"),
     path('game/my', views.api.game.MyGameView.as_view(), name="gamemy"),
-    path('userInformationInProblem/my', views.api.userInformationInProblem.MyUserInformationInProblemView.as_view(), name="uiipmy"),
     path('userInfo/my', views.api.userInfo.MyUserInfoView.as_view(), name="userinfomy"),
-    path('rank/', views.api.userInformationInProblem.rank.as_view(), name="rank"),
-    path('matchall/', views.api.Matchall.as_view(), name='matchall'),
-    path('selfBattle/', views.api.SelfBattle.as_view(), name='selfBattle'),
+    # path('rank/', views.api.userInformationInProblem.rank.as_view(), name="rank"),
+    # path('matchall/', views.api.Matchall.as_view(), name='matchall'),
+    # path('selfBattle/', views.api.SelfBattle.as_view(), name='selfBattle'),
 
     # rest_auth - 로그인 회원가입
     url(r'^rest-auth/', include('rest_auth.urls')),

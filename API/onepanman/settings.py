@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'redis',
-
     'rest_auth',
     'rest_framework.authtoken',
     'django.contrib.sites',
@@ -76,7 +75,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = ('http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3000')
+CORS_ORIGIN_WHITELIST = ('http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:8000')
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
@@ -108,9 +107,9 @@ WSGI_APPLICATION = 'onepanman.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'onepanman',
+        'NAME': 'onepanman_v2',
         'USER': 'root',
-        'PASSWORD': secrets_base["DB_PASSWORD"],
+        'PASSWORD': '',#secrets_base["DB_PASSWORD"],
         'HOST': 'localhost',
         'PORT': 3307,
 

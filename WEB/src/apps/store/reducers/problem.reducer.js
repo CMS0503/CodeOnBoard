@@ -31,7 +31,6 @@ const problem = (state = initState, action) => {
         case WIRTE_CODENAME:
             return {...state, codeName:action.payload}
         case SET_LANGUAGE:
-            console.log("set lang reducer")
             return {...state, language:action.payload}
         case SET_EDITOR:
             return {...state, editor:action.payload}

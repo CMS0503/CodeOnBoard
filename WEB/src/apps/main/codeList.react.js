@@ -21,7 +21,8 @@ function CodeList({match}) {
     const { problemId } = useSelector(state => ({
         problemId:state.problem.id
     }))
-    
+
+    const url = "/problem/" + problemId
     var _list = codeList!==null?
         <Table.Body>{codeList.map(code => {
             return(
@@ -39,7 +40,7 @@ function CodeList({match}) {
                     {code.available_game===true?`가능`:`불가능`}
                 </Table.Col>
                 <Table.Col className="tb">
-                    <Button color="primary" RootComponent="a" href="/problem/1" onClick={()=>{
+                    <Button color="primary" RootComponent="a" href={url} onClick={()=>{
                         window.localStorage.setItem("codeMode", "update")
                         window.sessionStorage.setItem("selectedCodeId", code.id);
                         window.sessionStorage.setItem("selectedCodeLanguageId", code.language);

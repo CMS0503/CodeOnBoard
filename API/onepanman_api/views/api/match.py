@@ -5,17 +5,14 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from onepanman_api.models import UserInformationInProblem, Problem, Game, Code
+from onepanman_api.models import Problem, Game, Code
+
+from onepanman_api.serializers.code import CodeSerializer
 import random
 import tasks
 
-from onepanman_api.util.create_uiip import create_instance
-
-from onepanman_api.util.update_uiip import update_playing
-
 
 class GetCoreResponse(Response):
-
     def close(self):
         matchInfo = self.data
 
@@ -28,6 +25,9 @@ class GetCoreResponse(Response):
         update_playing(challenger, problemid, status)
         update_playing(opposite, problemid, status)
 
+        Code.objects.all().filter(id=matchInfo["challenger_code_id"]).update(status="playing")
+        Code.objects.all().filter(id=matchInfo["opposite_code_id"]).update(status="playing")
+
         # 여기에 celery 호출하는 코드!
         result = tasks.play_game.delay(matchInfo)
 
@@ -35,70 +35,50 @@ class GetCoreResponse(Response):
 
 
 class Match(APIView):
-
     permission_classes = [IsAuthenticated]
 
     # 유저와 문제정보로 상대방을 매칭하고, 매칭 정보를 반환하는 함수
-    def match(self, userid, problemid, codeid):
-
-        queryset_up = UserInformationInProblem.objects.all().select_related('code')\
-            .filter(problem=problemid, playing=False).order_by('-score')
-        challenger = queryset_up.filter(user=userid)
-
-        exclude_list =[]
-        for i in range(len(queryset_up)):
-            code_ = queryset_up[i].code
-            if code_.available_game is False:
-                exclude_list.append(queryset_up[i].id)
-
-        for e_id in exclude_list:
-            queryset_up.exclude(id=e_id)
-
-        challenger_code = Code.objects.all().filter(id=codeid)[0]
+    def match(self, chllenger_id, problem_id, challenger_code_id):
+        queryset = Code.objects.all().filter(problem=problem_id, available_game=True).order_by('id')
+        challenger_code = queryset.filter(author=chllenger_id).last()
 
         # 유저가 게임중이면
-        if len(challenger) < 1:
-            return {'error': '유저가 게임중입니다'}, 0
+        if challenger_code.status == 'playing':
+            error_msg = '유저가 게임중입니다'
+            print(error_msg)
+            return False, error_msg
 
-        challenger = challenger[0]
-
-        queryset_up = queryset_up.exclude(user=userid)
+        # 게임을 진행할 코드가 없으면
+        if len(queryset) < 1:
+            return {"error": "게임을 진행할 코드가 없습니다."}, 0
 
         # 같은 유저와 연속 매칭 막기
-        games = Game.objects.all().filter(challenger=userid, problem=problemid).order_by('-date')
+        games = Game.objects.all().filter(challenger=chllenger_id, problem=problem_id).order_by('-date')
         if len(games) > 0:
-            ex_opposite_pk = games[0].opposite.pk
-        else :
-            # 게임이 첫 판이면 전판 유저가 없다.
-            ex_opposite_pk = 0
+            ex_opposite_id = games[0].opposite.pk
+        else:
+            # 첫번째 매칭이면 전판 유저가 없다.
+            ex_opposite_id = 0
 
+        queryset_opposites_code = queryset.exclude(author=chllenger_id)
+        queryset_opposites = list(queryset_opposites_code.values_list('author', flat=True).distinct().order_by())
+        # opposites = [i for i in range(N)]
 
-        for i in range(20):
+        while True:
             try:
-                if len(queryset_up) < 1:
-                    return {"error": "게임을 진행할 코드가 없습니다."}, 0
-
-                opposite_index = random.randint(0, len(queryset_up)-1)
-
-                opposite = queryset_up[opposite_index]
-
-                if opposite.user.pk == ex_opposite_pk and i < 19:
-                    continue
-
-
-
+                opposite_id = queryset_opposites.pop(random.randrange(len(queryset_opposites)))
             except Exception as e:
-                print("매칭 에러 : {}".format(e))
-
-            check, error_msg = self.checkValid(opposite.user.pk, problemid, opposite.code.id)
-            if check is True:
+                print("매칭 상대가 없습니다.")
+                return 'error : 매칭 상대가 없습니다.'
+            opposite_code = queryset_opposites_code.filter(author=opposite_id).order_by('id').last()
+            # 상대가 게임중이면
+            if opposite_code.status == 'playing':
+                continue
+            if opposite_id != ex_opposite_id:
                 break
 
-        if check is False:
-            return {"error": "매칭 상대가 없습니다."}, 0
-
         # 문제 규칙 정보 추가
-        problems = Problem.objects.all().filter(id=problemid)
+        problems = Problem.objects.all().filter(id=problem_id)
         problem = problems[0]
 
         try:
@@ -111,36 +91,31 @@ class Match(APIView):
 
 
         matchInfo = {
-            "challenger": challenger.user.pk,
-            "opposite": opposite.user.pk,
-            "challenger_code_id": codeid,
-            "opposite_code_id": opposite.code.id,
+            "challenger": chllenger_id,
+            "opposite": opposite_id,
+            "challenger_code_id": challenger_code_id,
+            "opposite_code_id": opposite_code.id,
             "challenger_code": challenger_code.code,
-            "opposite_code": opposite.code.code,
+            "opposite_code": opposite_code.code,
             "challenger_language": challenger_code.language.name,
-            "opposite_language": opposite.code.language.name,
-            "problem": int(problemid),
+            "opposite_language": opposite_code.language.name,
+            "problem": int(problem_id),
             "obj_num": rule["obj_num"],
             "placement": rule["placement"],
             "action": rule["action"],
             "ending": rule["ending"],
             "board_size": problem.board_size,
             "board_info": problem.board_info,
-            "challenger_name": challenger.user.username,
-            "opposite_name": opposite.user.username
-        }
-
-        scores = {
-            "challenger": challenger.score,
-            "opposite": opposite.score,
+            "challenger_name": challenger_code.author.username,
+            "opposite_name": opposite_code.author.username
         }
 
         #print(matchInfo)
 
-        return matchInfo, scores
+        return matchInfo
 
     # 게임에 사용될 인스턴스를 만들고, 그 id를 반환하는 함수
-    def get_GameId(self, info, scores, type="normal"):
+    def get_GameId(self, info, type="normal"):
         try:
             matchInfo = info
 
@@ -151,14 +126,10 @@ class Match(APIView):
                 "challenger_code": matchInfo['challenger_code_id'],
                 "opposite_code": matchInfo['opposite_code_id'],
                 "record": "0",
-                "challenger_score": scores['challenger'],
-                "opposite_score": scores['opposite'],
                 "challenger_name": matchInfo['challenger_name'],
                 "opposite_name": matchInfo['opposite_name'],
                 "type": type
             }
-
-
 
             serializer = serializers.GameSerializer(data=data)
             serializer.is_valid(raise_exception=True)
@@ -173,8 +144,6 @@ class Match(APIView):
                 challenger_code=validated_data['challenger_code'],
                 opposite_code=validated_data['opposite_code'],
                 record=validated_data['record'],
-                challenger_score=validated_data['challenger_score'],
-                opposite_score=validated_data['opposite_score'],
                 challenger_name=validated_data['challenger_name'],
                 opposite_name=validated_data['opposite_name'],
                 type=validated_data['type']
@@ -182,8 +151,7 @@ class Match(APIView):
 
         except Exception as e:
             print("game data 생성 중 에러 발생 : {}".format(e))
-            return {'error' : 'game 생성 error'}
-
+            return {'error': 'game 생성 error'}
 
         game_id = instance.id
 
@@ -191,57 +159,20 @@ class Match(APIView):
 
         return matchInfo
 
-    def checkValid(self, userid, problemid, codeid):
-
-        user_code = Code.objects.all().filter(id=codeid, author=userid)
-        user_uiip = UserInformationInProblem.objects.all().filter(user=userid, problem=problemid)[0]
-
-        if user_uiip.playing is True:
-            error_msg = "이미 게임 중 입니다."
-            print(error_msg)
-            return False, error_msg
-
-        if len(user_code) < 1:
-            error_msg = "코드가 존재하지 않습니다."
-            print(error_msg)
-            return False, error_msg
-
-        user_code = user_code[0]
-
-        available = user_code.available_game
-
-        if available is False:
-            error_msg = "게임 가능한 코드가 아닙니다."
-            print(error_msg)
-            return False, error_msg
-
-        problemInCode = user_code.problem.pk
-
-        if int(problemid) is not problemInCode:
-            error_msg = "코드와 문제가 맞지 않습니다."
-            print(error_msg)
-            return False, error_msg
-
-        return True, "OK"
-
     def post(self, request, version):
         try:
 
             data = request.data
 
-            userid = data['userid']
-            problemid = data['problemid']
-            codeid = data['codeid']
+            chllenger_id = data['userid']
+            problem_id = data['problemid']
+            code_id = data['codeid']
 
         except Exception as e:
             print("get function {}".format(e))
             return Response({"error": "유저, 문제, 코드 정보 가 유효하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        check, error_msg = self.checkValid(userid, problemid, codeid)
-        if check is False:
-            return Response({"error" : error_msg})
-
-        matchInfo, scores = self.match(userid, problemid, codeid)
+        matchInfo = self.match(chllenger_id, problem_id, code_id)
 
         if "error" in matchInfo:
             return Response(matchInfo)

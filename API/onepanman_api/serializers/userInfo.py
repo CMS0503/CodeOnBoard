@@ -9,4 +9,4 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.UserInfo
-        fields = ['language', 'heart', 'nickname', 'isCodeOpen', 'group', 'date', 'profileImage', 'tier']
+        fields = ['language', 'nickname', 'isCodeOpen', 'group', 'date', 'profileImage',]

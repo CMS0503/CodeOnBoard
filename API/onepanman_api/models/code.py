@@ -2,13 +2,12 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from onepanman_api.models import Problem, Language
-
+# from ..models import Problem, Language
 
 class Code(models.Model):
     """
     Code
     """
-
     id = models.AutoField(
         "ID",
         db_column='ID',
@@ -74,7 +73,19 @@ class Code(models.Model):
         "상태",
         db_column="STATUS",
         default="FAIL",
-        max_length=50,
+        max_length=20,
+    )
+
+    is_delete = models.BooleanField(
+        "삭제여부",
+        db_column="IS_DELETE",
+        default=False
+    )
+
+    open_code = models.IntegerField(
+        "코드 공개 여부",
+        db_column="OPEN_CODE",
+        default=0
     )
 
     def __str__(self):
