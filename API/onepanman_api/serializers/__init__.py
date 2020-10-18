@@ -7,6 +7,6 @@ from .language import LanguageSerializer
 from .user import UserSerializer
 from .userInfo import UserInfoSerializer
 
-__all__ = ['ProblemSerializer', 'ArticleSerializer', 'CodeSerializer', 'CommentSerializer', 'FriendSerializer', 'GameSerializer',
-           'GroupSerializer', 'GroupInfoSerializer', 'LanguageSerializer', 'NoticeSerializer', 'TestcaseSerializer',
-           'UserSerializer', 'UserInfoSerializer', 'UserInformationInProblemSerializer', 'RuleSerializer']
+__all__ = ['ProblemSerializer', 'CodeSerializer', 'GameSerializer',
+           'GroupSerializer', 'GroupInfoSerializer', 'LanguageSerializer',
+           'UserSerializer', 'UserInfoSerializer']
