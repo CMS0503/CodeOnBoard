@@ -26,56 +26,33 @@ class GameViewSet(viewsets.ModelViewSet):
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     filter_fields = ('challenger_code', 'opposite_code',)
 
-    permission_classes = [game]
+    # permission_classes = [game]
 
-    def game_error(self, data, partial):
+    def game_error(self, data):
         queryset = Code.objects.all()
 
-        if result == "challenger_error":
-            error_code = queryset.filter(id=data["challenger_code"])[0]
+        if data["result"] == "challenger_error":
+            error_code = queryset.filter(id=data["challenger_code"])
         else:
-            error_code = queryset.filter(id=data["opposite_code"])[0]
+            error_code = queryset.filter(id=data["opposite_code"])
 
         try:
             # update code to not available to game
-            code_data = {
-                "available_game": False,
-            }
-
-            code_serializer = CodeSerializer(error_code, data=code_data, partial=partial)
-            code_serializer.is_valid(raise_exception=True)
-            code_serializer.save()
-
+            error_code.update(available_game=False)
 
         except Exception as e:
             print("game_error - update code error : {}".format(e))
 
     def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+        data = super().update(request, *args, **kwargs)
+        data = data.data
 
-        if game_data.type == "normal":
-            update_playing(game_data.challenger.pk, game_data.problem.pk, False)
-            update_playing(game_data.opposite.pk, game_data.problem.pk, False)
-            return Response(data)
-
-        result = request.data["result"]
-
-        if result == "playing":
-            return Response(data)
+        result = data["result"]
 
         if result == "challenger_error" or result == "opposite_error":
-            self.game_error(request.data, partial)
-
+            self.game_error(data)
 
         return Response(data)
-
-    def partial_update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        return self.update(request, *args, **kwargs)
 
 class MyGameView(APIView):
 
