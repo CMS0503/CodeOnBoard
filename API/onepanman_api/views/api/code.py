@@ -27,7 +27,7 @@ class CodeViewSet(viewsets.ModelViewSet):
     pagination_class = CodePagination
 
     def create(self, request, *args, **kwargs):
-
+        print('code create')
         # 임시방편
         if type(request.data) == type(dict()):
             request.data['status'] = "TESTING"
