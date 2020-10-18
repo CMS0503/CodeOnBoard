@@ -7,5 +7,6 @@ from .userInfo import UserInfo
 from .classs import Class
 from .classProblem import ClassProblem
 from .userGroup import UserGroup
+
 __all__ = ['Problem', 'Language', 'Class', 'Code', 'ClassProblem', 'UserGroup', 'Game', 'GroupInfo',
            'UserInfo']

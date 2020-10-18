@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Problem(models.Model):
     """
-    Problem
+    Problem v2
     """
     id = models.AutoField(
         '서로게이트키',
@@ -13,14 +13,14 @@ class Problem(models.Model):
         primary_key=True
     )
 
-    # editor = models.ForeignKey(
-    #     User,
-    #     verbose_name='작성자',
-    #     db_column='EDITOR',
-    #     primary_key=False,
-    #     on_delete=models.PROTECT,
-    #     related_name="user_problem_editor",
-    # )
+    editor = models.ForeignKey(
+        User,
+        verbose_name='작성자',
+        db_column='EDITOR',
+        primary_key=False,
+        on_delete=models.PROTECT,
+        related_name="user_problem_editor",
+    )
 
     title = models.CharField(
         '문제이름',
@@ -76,7 +76,7 @@ class Problem(models.Model):
     board_info = models.TextField(
         "시작 보드 정보",
         db_column="BOARD_INFO",
-        default="[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]",
+        default="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
     )
 
     rule = models.TextField(

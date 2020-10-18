@@ -6,9 +6,9 @@ from .. import models
 @admin.register(models.GroupInfo)
 class GroupInfoAdmin(admin.ModelAdmin):
     """
-    ì½”ë“œ ì •ë³´
+    그룹정보
     """
-    list_display = ['group', 'ranking']
+    list_display = ['group']
     
     class Meta:
         model = models.GroupInfo

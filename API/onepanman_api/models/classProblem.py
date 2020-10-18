@@ -21,7 +21,7 @@ class ClassProblem(models.Model):
         null=False,
         blank=False,
         on_delete=models.PROTECT,
-        related_name="class",
+        related_name="Class",
     )
 
     def __str__(self):
@@ -29,6 +29,6 @@ class ClassProblem(models.Model):
 
     class Meta:
         db_table = "CLASSPROBLEM"
-        ordering = ['primary_key', 'class_id', 'problem_id']
+        ordering = ['pk', 'class_id', 'problem_id']
         verbose_name = '분반 문제 정보'
         verbose_name_plural = '분반 문제 정보'

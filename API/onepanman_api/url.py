@@ -29,8 +29,9 @@ api_info = openapi.Info(
 )
 schema_view = get_schema_view(
     api_info,
-    public=False,
-    permission_classes=(permissions.DjangoModelPermissionsOrAnonReadOnly,),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+    # permission_classes=(permissions.DjangoModelPermissionsOrAnonReadOnly,),
 )
 
 urlpatterns = [
@@ -39,11 +40,10 @@ urlpatterns = [
     path('user/my', views.api.user.MyUserView.as_view(), name="usermy"),
     path('code/my', views.api.code.MyCodeView.as_view(), name="codemy"),
     path('game/my', views.api.game.MyGameView.as_view(), name="gamemy"),
-    path('userInformationInProblem/my', views.api.userInformationInProblem.MyUserInformationInProblemView.as_view(), name="uiipmy"),
     path('userInfo/my', views.api.userInfo.MyUserInfoView.as_view(), name="userinfomy"),
-    path('rank/', views.api.userInformationInProblem.rank.as_view(), name="rank"),
-    path('matchall/', views.api.Matchall.as_view(), name='matchall'),
-    path('selfBattle/', views.api.SelfBattle.as_view(), name='selfBattle'),
+    # path('rank/', views.api.userInformationInProblem.rank.as_view(), name="rank"),
+    # path('matchall/', views.api.Matchall.as_view(), name='matchall'),
+    # path('selfBattle/', views.api.SelfBattle.as_view(), name='selfBattle'),
 
     # rest_auth - 로그인 회원가입
     url(r'^rest-auth/', include('rest_auth.urls')),

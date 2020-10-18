@@ -8,7 +8,7 @@ class LanguageAdmin(admin.ModelAdmin):
     """
     언어 정보
     """
-    list_display = ['id', 'name', 'compileMessage', 'runMessage']
+    list_display = ['id', 'name']
 
     class Meta:
         model = models.Language

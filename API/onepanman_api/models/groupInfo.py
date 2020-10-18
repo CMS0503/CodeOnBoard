@@ -40,29 +40,8 @@ class GroupInfo(models.Model):
         related_name="group_class",
     )
 
-    # ranking = models.IntegerField(
-    #     "랭킹",
-    #     db_column="RANKING",
-    #     null=True,
-    # )
-    #
-    # score = models.IntegerField(
-    #     "점수",
-    #     db_column="SCORE",
-    #     default=0,
-    # )
-    #
-    # leader = models.ForeignKey(
-    #     User,
-    #     db_column="LEADER",
-    #     verbose_name="그룹장",
-    #     on_delete=models.PROTECT,
-    #     null=True,
-    #
-    # )
-
     def __str__(self):
-        return '{}_{}_{}'.format(self.group.primary_key, self.group.name, self.ranking)
+        return '{}_{}'.format(self.group.primary_key, self.group.name)
 
     class Meta:
         db_table = "GROUPINFO"

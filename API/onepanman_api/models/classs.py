@@ -34,6 +34,6 @@ class Class(models.Model):
 
     class Meta:
         db_table = "CLASS"
-        ordering = ['primary_key']
+        ordering = ['pk']
         verbose_name = '클래스정보'
         verbose_name_plural = '클래스정보'

@@ -39,6 +39,6 @@ class UserGroup(models.Model):
 
     class Meta:
         db_table = "USERGROUP"
-        ordering = ['primary_key', 'group_id', 'user_id']
+        ordering = ['pk', 'group_id', 'user_id']
         verbose_name = '그룹 유저 정보'
         verbose_name_plural = '그룹 유저 정보'

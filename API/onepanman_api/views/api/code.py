@@ -8,15 +8,8 @@ from onepanman_api.serializers.code import CodeSerializer
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-
 from onepanman_api.permissions import CodePermission
-
-from onepanman_api.models import UserInformationInProblem
-from onepanman_api.util.create_uiip import create_instance
-
 from onepanman_api.pagination import CodePagination
-
 from onepanman_api.models import Problem
 
 import tasks
@@ -28,9 +21,9 @@ class CodeViewSet(viewsets.ModelViewSet):
     queryset = Code.objects.all()
     serializer_class = CodeSerializer
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
-    filter_fields = ('author', 'problem', 'available_game')
+    filter_fields = ('author', 'problem', 'available_game',)
 
-    permission_classes = [CodePermission]
+    # permission_classes = [CodePermission]
     pagination_class = CodePagination
 
     def create(self, request, *args, **kwargs):
@@ -48,14 +41,6 @@ class CodeViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-
-        # userInformationInProblem 객체가 존재하는지 확인하고 생성한다.
-        user = serializer.data["author"]
-        problem = serializer.data["problem"]
-        queryset = UserInformationInProblem.objects.all().filter(user=user, problem=problem)
-
-        if len(queryset) < 1:
-            create_instance(user, problem, serializer.data["id"])
 
         self.test_code(serializer.data)
 
@@ -85,7 +70,6 @@ class CodeViewSet(viewsets.ModelViewSet):
 
         if 'available_game' not in request.data:
             self.test_code(serializer.data)
-
 
         return Response(serializer.data)
 
@@ -124,7 +108,7 @@ class MyCodeView(APIView):
     def get(self, request, version):
 
         problemid = request.query_params.get('problem')
-        if problemid is None :
+        if problemid is None:
             queryset = Code.objects.all().filter(author=request.user.pk)
         else:
             queryset = Code.objects.all().filter(author=request.user.pk, problem=problemid)

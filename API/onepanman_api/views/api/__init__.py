@@ -7,9 +7,10 @@ from .problem import ProblemViewSet
 from .user import UserViewSet
 from .userInfo import UserInfoViewSet
 from .match import Match
-from .matchall import Matchall
-from .selfBattle import SelfBattle
+# from .matchall import Matchall
+# from .selfBattle import SelfBattle
 
-__all__ = ['ArticleViewSet', 'CommentViewSet', 'CodeViewSet', 'FriendViewSet', 'GameViewSet', 'GroupInfoViewSet',
-           'GroupViewSet', 'LanguageViewSet', 'NoticeViewSet', 'ProblemViewSet', 'TestcaseViewSet',
-           'UserViewSet', 'UserInfoViewSet', 'UserInformationInProblemViewSet', 'Match', 'RuleViewSet', 'Matchall', 'SelfBattle']
+__all__ = ['CodeViewSet', 'GameViewSet', 'GroupInfoViewSet',
+           'GroupViewSet', 'LanguageViewSet', 'ProblemViewSet',
+           'UserViewSet', 'UserInfoViewSet', 'Match']
+#, 'Matchall', 'SelfBattle']

@@ -8,7 +8,6 @@ class Code(models.Model):
     """
     Code
     """
-
     id = models.AutoField(
         "ID",
         db_column='ID',
@@ -70,12 +69,12 @@ class Code(models.Model):
         auto_now_add=True,
     )
 
-    # status = models.CharField(
-    #     "상태",
-    #     db_column="STATUS",
-    #     default="FAIL",
-    #     max_length=50,
-    # )
+    status = models.CharField(
+        "상태",
+        db_column="STATUS",
+        default="FAIL",
+        max_length=20,
+    )
 
     is_delete = models.BooleanField(
         "삭제여부",
