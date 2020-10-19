@@ -11,8 +11,8 @@ def match(data):
     match_data = data
     match_dir = os.getcwd()  # os.path.join(os.getcwd(), 'match')
     extension = {'': '', 'C': '.c', 'C++': '.cpp', 'PYTHON': '.py', 'JAVA': '.java'}
-    update_url = 'http://203.246.112.32:8000/api/v1/game/' + str(match_data['match_id']) + '/'
-
+    # update_url = 'http://203.246.112.32:8000/api/v1/game/' + str(match_data['match_id']) + '/'
+    update_url = 'http://210.223.124.11:8000/api/v1/game/' + str(match_data['match_id']) + '/'
     challenger_code_filename = 'challenger{0}'.format(extension[match_data['challenger_language']])
     oppositer_code_filename = 'oppositer{0}'.format(extension[match_data['opposite_language']])
 
@@ -50,7 +50,8 @@ def match(data):
             "error_msg": error_msg}
     data2 = {"winner": winner, "placement_record": placement_record, "result": result,
             "error_msg": error_msg}
-    print(data2)
+    # print(data2)
+    print(update_url)
     r = requests.patch(update_url, data=data)
     print('request ok')
 
