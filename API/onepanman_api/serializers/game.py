@@ -12,6 +12,4 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Game
-        # fields = ['id', 'placement_record', 'record', 'winner', 'date', 'problem',
-        #           'challenger_code', 'opposite_code', 'result', 'error_msg', 'type']
         fields = "__all__"
