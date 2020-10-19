@@ -54,11 +54,11 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_auth.registration',
-
     'corsheaders',
 ]
 # Celery
-CELERY_BROKER_URL = 'redis://192.168.23.13:6379'
+# CELERY_BROKER_URL = 'redis://192.168.23.13:6379'
+CELERY_BROKER_URL = 'redis://localhost:6379'
 
 SITE_ID = 1
 
