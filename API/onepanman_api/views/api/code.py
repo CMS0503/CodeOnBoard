@@ -91,7 +91,8 @@ class CodeViewSet(viewsets.ModelViewSet):
             "action": rule["action"],
             "ending": rule["ending"],
             "board_size": problem.board_size,
-            "board_info": problem.board_info
+            "board_info": problem.board_info,
+            "problem": data["problem"]
         }
 
         # 여기서 celery 코드 추가!
