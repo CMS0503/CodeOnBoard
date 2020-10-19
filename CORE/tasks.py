@@ -46,7 +46,7 @@ def test_code(data):
     docker_img = "core"
     client = docker.from_env()
     f_dir = os.getcwd() + '/test_code'
-    file_name = 'matchdata.json.' + time.strftime('%m-%d-%H-%M-%S', time.localtime(time.time())) + '_' + str(data['match_id'])
+    file_name = 'testdata.json.' + time.strftime('%m-%d-%H-%M-%S', time.localtime(time.time())) + '_' + str(data['code_id'])
     print(file_name)
     match_data_file_path = os.path.join(f_dir, file_name)
     print(match_data_file_path)
