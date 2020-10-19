@@ -11,8 +11,8 @@ def test_code(data):
     test_data = data
     test_dir = os.getcwd()  # os.path.join(os.getcwd(), 'match')
     extension = {'': '', 'C': '.c', 'C++': '.cpp', 'PYTHON': '.py', 'JAVA': '.java'}
-    update_url = 'http://203.246.112.32:8000/api/v1/code/' + str(test_data['challenger_code_id']) + '/'
-
+    # update_url = 'http://203.246.112.32:8000/api/v1/code/' + str(test_data['challenger_code_id']) + '/'
+    update_url = 'http://210.223.124.11:8000/api/v1/code/' + str(test_data['code_id']) + '/'
     # code_filename = 'challenger{0}'.format(extension[test_data['challenger_language']])
     code_filename = 'challenger.py'
 
@@ -37,7 +37,8 @@ def test_code(data):
     if result == 'finish':
         available = True
 
-    # r = requests.patch(update_url, data={"available_game": available})
+    print(f'patch to :{update_url}')
+    r = requests.patch(update_url, data={"available_game": available})
 
 if __name__ == '__main__':
     with open('testdata.json') as json_file:
