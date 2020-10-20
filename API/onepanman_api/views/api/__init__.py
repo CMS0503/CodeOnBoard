@@ -7,10 +7,12 @@ from .problem import ProblemViewSet
 from .user import UserViewSet
 from .userInfo import UserInfoViewSet
 from .match import Match
+from .rule import RuleViewSet
+
 # from .matchall import Matchall
 # from .selfBattle import SelfBattle
 
 __all__ = ['CodeViewSet', 'GameViewSet', 'GroupInfoViewSet',
            'GroupViewSet', 'LanguageViewSet', 'ProblemViewSet',
-           'UserViewSet', 'UserInfoViewSet', 'Match']
+           'UserViewSet', 'UserInfoViewSet', 'Match', 'RuleViewSet']
 #, 'Matchall', 'SelfBattle']

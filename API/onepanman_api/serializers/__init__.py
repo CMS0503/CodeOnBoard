@@ -6,7 +6,8 @@ from .gruopInfo import GroupInfoSerializer
 from .language import LanguageSerializer
 from .user import UserSerializer
 from .userInfo import UserInfoSerializer
+from .rule import RuleSerializer
 
 __all__ = ['ProblemSerializer', 'CodeSerializer', 'GameSerializer',
            'GroupSerializer', 'GroupInfoSerializer', 'LanguageSerializer',
-           'UserSerializer', 'UserInfoSerializer']
+           'UserSerializer', 'UserInfoSerializer', 'RuleSerializer']

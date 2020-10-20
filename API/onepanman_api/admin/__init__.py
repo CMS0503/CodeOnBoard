@@ -4,5 +4,6 @@ from .game import GameAdmin
 from .groupInfo import GroupInfoAdmin
 from .language import LanguageAdmin
 from .userInfo import UserInfoAdmin
+from .rule import Rule
 
-__all__ = ['ProblemAdmin', 'CodeAdmin', 'GameAdmin', 'GroupInfoAdmin', 'LanguageAdmin', 'UserInfoAdmin',]
+__all__ = ['ProblemAdmin', 'CodeAdmin', 'GameAdmin', 'GroupInfoAdmin', 'LanguageAdmin', 'UserInfoAdmin', 'Rule']
