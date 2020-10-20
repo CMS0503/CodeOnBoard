@@ -1,15 +1,9 @@
-import time
-import datetime
 import docker
 import json
 import multiprocessing
 import time
 import os
-import requests
 from celery import Celery
-
-from gamemanager import GameManager
-from userprogram import UserProgram
 
 # celery app
 app = Celery('tasks', broker='redis://localhost:6379', backend='redis://localhost:6379')
