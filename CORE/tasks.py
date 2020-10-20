@@ -24,7 +24,8 @@ def play_game(data):
     # docker image
     docker_img = "core"
     data = data
-    print('run container')
+    mode = 'develop'
+    print('run container for match')
     client = docker.from_env()
     f_dir = os.getcwd() + '/match'
     file_name = 'matchdata.json.' + time.strftime('%m-%d-%H-%M-%S', time.localtime(time.time())) + '_' + str(data['match_id'])
@@ -36,13 +37,18 @@ def play_game(data):
     print(111)
     volumes = {match_data_file_path: {'bind': '/matchdata.json', 'mode': 'rw'}}
     print(222)
-    client.containers.run(image=docker_img, command='python3 match_game.py', volumes=volumes, auto_remove=True, privileged=True)#, tty=True, stdin_open=True)
-    # client.containers.run(image=docker_img, volumes=volumes, auto_remove=True, privileged=True)#, tty=True, stdin_open=True)
+    if mode == 'develop':
+        client.containers.run(image=docker_img, command='python3 match_game.py', volumes=volumes, auto_remove=True,
+                              privileged=True, network_mode='host')
+    else:
+        client.containers.run(image=docker_img, command='python3 match_game.py', volumes=volumes, auto_remove=True,
+                              privileged=True)
 
 
 @app.task
 def test_code(data):
     print('run container for test code')
+    mode = 'develop'
     docker_img = "core"
     client = docker.from_env()
     f_dir = os.getcwd() + '/test_code'
@@ -53,8 +59,12 @@ def test_code(data):
     with open(match_data_file_path, 'w') as f:
         json.dump(data, f)
     volumes = {match_data_file_path: {'bind': '/testdata.json', 'mode': 'rw'}}
-    client.containers.run(image=docker_img, command='python3 test_code.py', volumes=volumes, auto_remove=True, privileged=True)#, tty=True, stdin_open=True)
-
+    if mode == 'develop':
+        client.containers.run(image=docker_img, command='python3 test_code.py', volumes=volumes, auto_remove=True,
+                              privileged=True, network_mode='host')
+    else:
+        client.containers.run(image=docker_img, command='python3 test_code.py', volumes=volumes, auto_remove=True,
+                              privileged=True)
 
 @app.task
 def play_with_me(data):
