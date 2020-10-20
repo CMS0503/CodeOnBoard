@@ -24,7 +24,7 @@ challenger_add.py
 opposite_add.py
 .idea
 error_json/
-
+testdata.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
