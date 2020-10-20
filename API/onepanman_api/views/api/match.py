@@ -16,8 +16,8 @@ class GetCoreResponse(Response):
     def close(self):
         matchInfo = self.data
 
-        Code.objects.all().filter(id=matchInfo["challenger_code_id"]).update(status="playing")
-        Code.objects.all().filter(id=matchInfo["opposite_code_id"]).update(status="playing")
+        # Code.objects.all().filter(id=matchInfo["challenger_code_id"]).update(status="playing")
+        # Code.objects.all().filter(id=matchInfo["opposite_code_id"]).update(status="playing")
 
         # 여기에 celery 호출하는 코드!
         result = tasks.play_game.delay(matchInfo)
@@ -29,29 +29,28 @@ class Match(APIView):
     # permission_classes = [IsAuthenticated]
 
     # 유저와 문제정보로 상대방을 매칭하고, 매칭 정보를 반환하는 함수
-    def match(self, chllenger_id, problem_id, challenger_code_id):
+    def match(self, challenger_id, problem_id, challenger_code_id):
         queryset = Code.objects.all().filter(problem=problem_id, available_game=True).order_by('id')
-        challenger_code = queryset.filter(author=chllenger_id).last()
-
+        challenger_code = Code.objects.get(id=challenger_code_id)
         # 유저가 게임중이면
         if challenger_code.status == 'playing':
-            error_msg = '유저가 게임중입니다'
+            error_msg = 'error: 유저가 게임중입니다'
             print(error_msg)
-            return False, error_msg
+            return error_msg
 
         # 게임을 진행할 코드가 없으면
         if len(queryset) < 1:
             return {"error": "게임을 진행할 코드가 없습니다."}, 0
 
         # 같은 유저와 연속 매칭 막기
-        games = Game.objects.all().filter(challenger=chllenger_id, problem=problem_id).order_by('-date')
+        games = Game.objects.all().filter(challenger_code__author_id=challenger_id, challenger_code__problem_id=problem_id).order_by('-date')
         if len(games) > 0:
-            ex_opposite_id = games[0].opposite.pk
+            ex_opposite_id = games[0].challenger_code.author.id
         else:
             # 첫번째 매칭이면 전판 유저가 없다.
             ex_opposite_id = 0
 
-        queryset_opposites_code = queryset.exclude(author=chllenger_id)
+        queryset_opposites_code = queryset.exclude(author=challenger_id)
         queryset_opposites = list(queryset_opposites_code.values_list('author', flat=True).distinct().order_by())
         # opposites = [i for i in range(N)]
 
@@ -82,7 +81,7 @@ class Match(APIView):
 
 
         matchInfo = {
-            "challenger": chllenger_id,
+            "challenger": challenger_id,
             "opposite": opposite_id,
             "challenger_code_id": challenger_code_id,
             "opposite_code_id": opposite_code.id,
@@ -109,16 +108,12 @@ class Match(APIView):
     def get_GameId(self, info, type="normal"):
         try:
             matchInfo = info
-
+            # print(">>>>>>>>>>")
+            # print(type(matchInfo))
             data = {
-                "problem": matchInfo['problem'],
-                "challenger": matchInfo['challenger'],
-                "opposite": matchInfo['opposite'],
                 "challenger_code": matchInfo['challenger_code_id'],
                 "opposite_code": matchInfo['opposite_code_id'],
                 "record": "0",
-                "challenger_name": matchInfo['challenger_name'],
-                "opposite_name": matchInfo['opposite_name'],
                 "type": type
             }
 
@@ -129,14 +124,9 @@ class Match(APIView):
             print(validated_data)
 
             instance = Game.objects.create(
-                problem=validated_data['problem'],
-                challenger=validated_data['challenger'],
-                opposite=validated_data['opposite'],
                 challenger_code=validated_data['challenger_code'],
                 opposite_code=validated_data['opposite_code'],
                 record=validated_data['record'],
-                challenger_name=validated_data['challenger_name'],
-                opposite_name=validated_data['opposite_name'],
                 type=validated_data['type']
             )
 
@@ -155,7 +145,7 @@ class Match(APIView):
 
             data = request.data
 
-            chllenger_id = data['userid']
+            challenger_id = data['userid']
             problem_id = data['problemid']
             code_id = data['codeid']
 
@@ -163,12 +153,12 @@ class Match(APIView):
             print("get function {}".format(e))
             return Response({"error": "유저, 문제, 코드 정보 가 유효하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        matchInfo = self.match(chllenger_id, problem_id, code_id)
+        matchInfo = self.match(challenger_id, problem_id, code_id)
 
         if "error" in matchInfo:
             return Response(matchInfo)
 
-        matchInfo = self.get_GameId(matchInfo, scores)
+        matchInfo = self.get_GameId(matchInfo)
 
         if "error" in matchInfo:
             return Response(matchInfo)
