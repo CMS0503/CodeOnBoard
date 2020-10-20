@@ -1,6 +1,6 @@
-from placement_rule import PlacementRule
-from action_rule import ActionRule
-from ending_rule import EndingRule
+from rule.placement_rule import PlacementRule
+from rule.action_rule import ActionRule
+from rule.ending_rule import EndingRule
 
 
 class Rules(PlacementRule, ActionRule, EndingRule):

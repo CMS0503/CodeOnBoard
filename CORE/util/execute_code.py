@@ -1,8 +1,7 @@
 import os
-import time
 import signal
-import timeout
-import subprocess
+from decoration import timeout
+
 
 class Execution:
     def __init__(self, limit_time=2000):

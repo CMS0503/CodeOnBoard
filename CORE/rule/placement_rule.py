@@ -7,6 +7,7 @@ class PlacementRule:
     def __init__(self):
         self.placement_message = None
         self.placement_rule_list = [self.cross, self.diagonal, self.eight_dir, self.custom, self.add_close, self.add_any]
+        # self.placement_rules = {1: self.segyun}
         # self.placement_rule_addlist = [self.add_close, self.add_any]
         self.placement_rule_option = [self.block_move, self.remove, self.only_reverse]
 
