@@ -26,17 +26,19 @@ class PlacementRule:
             print('check base rule...', end='')
             self.util.check_base_rule()
             print('OK')
-            for rule in self.problem_rules:
-                if self.rules[rule]() is True:
-                    break
         except Exception as e:
             print(e)
-            return 'error', e
 
-        self.util.update_board()
-        return 'OK', self.util.board
+        for rule in self.problem_rules:
+            if self.rules[rule]() is True:
+
+                self.util.update_board()
+                return 'OK', self.util.board
+
+        return 'error', f'miss position: {self.util.placement}'
 
     def set_problem_rule(self):
+        self.problem_rules.clear()
         for rule in self.util.rule[1]:
             self.problem_rules.append(int(rule))
 
@@ -45,9 +47,9 @@ class PlacementRule:
 
     def segyun_move(self):
         result = []
-        result.append(self.util.move(direction='eight', distance=(2, 2)))
-        result.append(self.util.move(direction='custom', distance=(1, 2)))
-        result.append(self.util.move(direction='custom', distance=(2, 1)))
+        result.append(self.util.move(direction='Eight', distance=(2, 2)))
+        result.append(self.util.move(direction='CUSTOM', distance=(1, 2)))
+        result.append(self.util.move(direction='CUSTOM', distance=(2, 1)))
 
         if True in result:
             return True
