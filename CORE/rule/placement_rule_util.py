@@ -104,28 +104,26 @@ class PlacementRuleUtil:
                 continue
             if self.board[x][y] > 0:
                 return True
-        print(1)
-        raise Exception(f'miss position:{self.placement}')
+
+        return False
 
     # 이동
     def move(self, direction, distance):
-
         min_distance = distance[0]
         max_distance = distance[1]
-        print('move', type(self.next_x), type(self.curr_x))
         x_inc = abs(self.next_x - self.curr_x)
         y_inc = abs(self.next_y - self.curr_y)
 
         if max_distance == 0:
             max_distance = 999
-        if direction == 'CROSS' or 'eight':
-            if (x_inc == 0 and self.check_in_range(y_inc, min=min_distance, max=max_distance)) or \
-                    (y_inc == 0 and self.check_in_range(x_inc, min=min_distance, max=max_distance)):
+        if direction == 'CROSS' or 'Eight':
+            if (x_inc == 0 and self.check_in_range(y_inc, min=min_distance, max=max_distance+1)) or \
+                    (y_inc == 0 and self.check_in_range(x_inc, min=min_distance, max=max_distance+1)):
                 return True
-        if direction == 'DIAGONAL' or 'eight':
+        if direction == 'DIAGONAL' or 'Eight':
             if x_inc == y_inc and \
-                    self.check_in_range(x_inc, min=min_distance, max=max_distance) and \
-                    self.check_in_range(y_inc, min=min_distance, max=max_distance):
+                    self.check_in_range(x_inc, min=min_distance, max=max_distance+1) and \
+                    self.check_in_range(y_inc, min=min_distance, max=max_distance+1):
                 return True
         if direction == 'CUSTOM':
             x_custom = distance[0]
