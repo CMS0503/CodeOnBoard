@@ -16,12 +16,12 @@ def test_code(data):
     # code_filename = 'challenger{0}'.format(extension[test_data['challenger_language']])
     code_filename = 'challenger.py'
 
-    # code_path = os.path.join(test_dir, code_filename)
+    code_path = os.path.join(test_dir, code_filename)
 
-    # code = test_data['challenger_code']
+    code = test_data['challenger_code']
 
-    # with open(code_path, 'w') as f:
-    #     f.write(code)
+    with open(code_path, 'w') as f:
+        f.write(code)
     challenger = UserProgram('challenger', test_data['challenger'], test_data['challenger_language'], test_dir,
                              code_filename)
 
@@ -37,7 +37,6 @@ def test_code(data):
     status = 'OK'
     if result == 'finish':
         available = True
-
     print(f'patch to :{update_url}')
     r = requests.patch(update_url, data={"available_game": available, "status": status})
 
