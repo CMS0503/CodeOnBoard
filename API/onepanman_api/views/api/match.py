@@ -74,7 +74,6 @@ class Match(APIView):
         try:
             rule = problem.rule
             rule = json.loads(rule)
-
         except Exception as e:
             print("fail to read rule information : {}".format(e))
             return {'error': 'rule 정보 가져오기 에러'}, 0
@@ -90,7 +89,6 @@ class Match(APIView):
             "challenger_language": challenger_code.language.name,
             "opposite_language": opposite_code.language.name,
             "problem": int(problem_id),
-            "obj_num": rule["obj_num"],
             "placement": rule["placement"],
             "action": rule["action"],
             "ending": rule["ending"],
@@ -109,7 +107,7 @@ class Match(APIView):
         try:
             matchInfo = info
             # print(">>>>>>>>>>")
-            # print(type(matchInfo))
+            # print(matchInfo)
             data = {
                 "challenger_code": matchInfo['challenger_code_id'],
                 "opposite_code": matchInfo['opposite_code_id'],

@@ -36,7 +36,7 @@ def play_with_me(data):
                                placement_rule=json_data['placement'], action_rule=json_data['action'],
                                ending_rule=json_data['ending'],
                                board_size=json_data['board_size'], board_info=json_data['board_info'],
-                               obj_num=json_data['obj_num'], problem=json_data['problem'])
+                               problem=json_data['problem'])
 
     result, winner, board_record, placement_code = game_manager.play_with_me(placement)
 

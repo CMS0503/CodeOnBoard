@@ -1,38 +1,30 @@
 class PlacementRuleUtil:
-    def __init__(self, data, board, placement):
-        self.board_size = data.board_size
-        self.board = board
-        self.placement = placement
-        self.placement_type = None
+
+    def __init__(self, game_data, placement_data):
+        self.rule = game_data.placement_rule[placement_data.obj_number]
+        self.placement = placement_data.placement
+        self.type = self.rule[0]
+        self.placement_type = placement_data.placement_type
+
+        self.board = placement_data.board
+        self.curr_x = placement_data.curr_x
+        self.curr_y = placement_data.curr_y
+        self.next_x = placement_data.next_x
+        self.next_y = placement_data.next_y
+        self.obj_number = placement_data.obj_number
 
         self.placement_rule_option = {1: self.block_move, 2: self.remove}
-
-        self.curr_x = None
-        self.curr_y = None
-        self.next_x = None
-        self.next_y = None
-        self.obj_number = None
-        self.set_placement()
-
-        self.rule = data.placement_rule[self.obj_number]
-        self.type = self.rule[0]
 
         # add option
         if self.rule[2]:
             self.obj_option = self.rule[2]
 
-    def check_type(self): # 0: add, 1: move, 2: add&move
-        if '>' in self.placement:
-            if self.type == 0 or 2:
-                pass
-            else:
-                raise Exception(f'stone{self.obj_number}{self.next_x, self.next_y} cant move')
+    def check_type(self):  # type -> 0: add, 1: move, 2: add&move
+        if self.placement_type == 'add' and self.type == 1:
+            raise Exception(f'stone{self.obj_number}{self.next_x, self.next_y} cant move')
 
-        elif '>' not in self.placement:
-            if self.type == 1 or 2:
-                pass
-            else:
-                raise Exception(f'stone{self.obj_number}{self.next_x, self.next_y} can only move')
+        elif self.placement_type == 'move' and self.type == 0:
+            raise Exception(f'stone{self.obj_number}{self.next_x, self.next_y} can only move')
 
     def check_base_rule(self):
         stone = int(self.obj_number)
@@ -51,42 +43,15 @@ class PlacementRuleUtil:
             else:
                 raise Exception(f'There is already enemy stone: {self.placement}')
 
-    def set_placement(self):
-        print('set placement')
-        try:
-            if '>' in self.placement:
-                self.placement_type = 'move'
-                self.curr_x = list(map(int, self.placement.split('>')[0].split()))[0]
-                self.curr_y = list(map(int, self.placement.split('>')[0].split()))[1]
-
-                self.next_x = list(map(int, self.placement.split('>')[1].split()))[0]
-                self.next_y = list(map(int, self.placement.split('>')[1].split()))[1]
-                self.obj_number = str(self.board[self.curr_x][self.curr_y])
-
-                if self.check_in_range(self.curr_x) is False or \
-                        self.check_in_range(self.curr_y) is False:
-                    raise Exception(f'pos {self.curr_x, self.curr_y} is out of board:{self.placement}')
-            else:
-                self.placement_type = 'add'
-                self.next_x = list(map(int, self.placement.split()))[1]
-                self.next_y = list(map(int, self.placement.split()))[2]
-                self.obj_number = list(map(str, self.placement.split()))[0]
-
-            if self.check_in_range(self.next_x) is False or \
-                    self.check_in_range(self.next_y) is False:
-                raise Exception(f'pos {self.next_x, self.next_y} is out of board:{self.placement}')
-        except Exception as e:
-            print(e)
+    def check_in_range(self, num, min=0, max=None):
+        if max is None:
+            max = len(self.board)
+        return num in range(min, max)
 
     def add_rule_option(self):
         if self.obj_option is not None:
             for option in self.obj_option:
                 self.rules.append(self.placement_rule_option[option])
-
-    def check_in_range(self, num, min=0, max=None):
-        if max is None:
-            max = self.board_size
-        return num in range(min, max)
 
     # 인접한 곳에 돌 추가
     def add_adjacent(self, direction):

@@ -4,6 +4,7 @@ from .placement_rule_util import PlacementRuleUtil
 
 
 class PlacementRule:
+
     def __init__(self):
         self.util = None
         self.rules = {
@@ -13,8 +14,8 @@ class PlacementRule:
 
         self.problem_rules = []
 
-    def check_placement_rule(self, data, board, placement):
-        self.util = PlacementRuleUtil(data, board, placement)
+    def check_placement_rule(self, game_data, placement_data):
+        self.util = PlacementRuleUtil(game_data, placement_data)
         # game type check
         try:
             print('set problem rule...', end='')
@@ -31,11 +32,10 @@ class PlacementRule:
 
         for rule in self.problem_rules:
             if self.rules[rule]() is True:
-
                 self.util.update_board()
-                return 'OK', self.util.board
+                return 'OK', placement_data.board
 
-        return 'error', f'miss position: {self.util.placement}'
+        return 'error', f'miss position: {placement_data.placement}'
 
     def set_problem_rule(self):
         self.problem_rules.clear()

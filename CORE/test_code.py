@@ -29,7 +29,7 @@ def test_code(data):
                                placement_rule=test_data['placement'], action_rule=test_data['action'],
                                ending_rule=test_data['ending'],
                                board_size=test_data['board_size'], board_info=test_data['board_info'],
-                               obj_num=test_data['obj_num'], problem=test_data['problem'])
+                               problem=json_data['problem'])
 
     _, _, _, result, _ = game_manager.play_game()
     print('result :', result)

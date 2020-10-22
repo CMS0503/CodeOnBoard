@@ -2,90 +2,54 @@
 import numpy as np
 import random
 
+
 class EndingRule:
+
     def __init__(self):
         self.ending_message = False
-        self.ending_condition_list = [self.full_board, self.only_one_side, self.one_line]
+        self.base_ending_rule = [self.full_board, self.only_one_side]
+        self.ending_condition_list = {0: self.nothing, 1: self.one_line}
         self.ending_option_list = [self.one_line_num, self.check_available_place]
         self.placement_type = None
+
         self.winner = None
-        self.x1 = None
-        self.y1 = None
-        self.x = None
-        self.y = None
-        self.ending_result = ''
+        self.is_ending = False
 
         self.board = None
-        self.placement = None
-        self.data = None
+        self.game_data = None
 
         self.rule_list = []
 
-        # object rule
-        self.obj_number = None
-        self.obj_rule = None
-
-        self.ending_rule = None
+        self.rule = None
         self.ending_option = None
 
         self.flag = True
 
-    def check_ending(self, game_data, board, placement):
-        self.setting(game_data, board, placement)
+    def nothing(self):
+        pass
 
-        for i in range(len(self.ending_rule)):
-            self.rule_list.append(self.ending_condition_list[self.ending_rule[i]])
-        
+    def check_ending(self, game_data, placement_data):
+        self.setting(game_data, placement_data)
+
         if game_data.problem in (1, 2):
-            print(2)
             self.check_available_place()
-        if self.ending_option is not None:
-            self.rule_list.append(self.ending_option_list[self.ending_option])
-        for function in self.rule_list:
+            if self.is_ending is True:
+                self.count_stone()
+                return self.is_ending, self.winner
+
+        for function in self.base_ending_rule:
             function()
-            if self.ending_message is not False:
-                if self.ending_message is True:
-                    return self.ending_message, self.winner  # , self.ending_result
-                else:
-                    raise Exception(self.ending_message)
+            if self.is_ending is True:
+                self.count_stone()
+                return self.is_ending, self.winner
 
-        return self.ending_message, 0
+        return self.is_ending, 0
 
-    def setting(self, data, board, placement):
-        self.data = data
-        try:
-            if '>' in placement:
-                self.x1 = list(map(int, placement.split('>')[0].split()))[0]
-                self.y1 = list(map(int, placement.split('>')[0].split()))[1]
-                if self.check_range(self.x1, self.y1):
-                    raise Exception(f'out of range')
-                self.x = list(map(int, placement.split('>')[1].split()))[0]
-                self.y = list(map(int, placement.split('>')[1].split()))[1]
-                if self.check_range(self.x, self.y):
-                    raise Exception(f'out of range')
-                self.obj_number = str(board[self.x][self.y])
-            else:
-                self.obj_number = list(map(str, placement.split()))[0]
-                self.x = list(map(int, placement.split()))[1]
-                self.y = list(map(int, placement.split()))[2]
-                if self.check_range(self.x, self.y):
-                    raise Exception(f'out of range')
-                self.x1 = None
-                self.y1 = None
+    def setting(self, game_data, placement_data):
+        self.game_data = game_data
+        self.board = np.array(placement_data.board)
 
-            self.board = board
-            self.placement = placement
-            self.rule_list.clear()
-            self.ending_rule = data.ending_rule[self.obj_number][0]
-            if len(data.ending_rule[self.obj_number]) > 1:
-                self.ending_option = data.ending_rule[self.obj_number][1]
-            self.ending_message = False
-            self.available = True
-            ##
-            self.obj_rule = data.placement_rule[self.obj_number]   # [[["이동or추가", "몇번이동", "최소 or x","최대 or y"], [이동2, , ,], ["추가", "최소", "최대"]],"옵션"]
-            self.obj_type = self.obj_rule[0]
-        except Exception as e:
-            self.ending_message = e
+        self.rule = game_data.ending_rule
 
     # 엔딩 조건
     def one_line(self, game_data, board, placement):  # TODO
@@ -130,50 +94,19 @@ class EndingRule:
 
     # 보드판을 가득 채웠을 경우
     def full_board(self):
-        my_cnt = 0
-        your_cnt = 0
-        # if available == True
-        # print('in end')
-        # print(self.board)
-        # print(self.available)
-        for line in self.board:
-            for i in line:
-                if i == 0:
-                    if self.available == True:
-                        return
-                    else:
-                        continue
-                elif i < 0:
-                    your_cnt += 1
-                elif i > 0:
-                    my_cnt += 1
-
-        if my_cnt > your_cnt:
-            self.winner = 1
-        elif your_cnt > my_cnt:
-            self.winner = -1
-        else:
-            self.winner = 0
-        self.ending_message = True
-        # if 
-        # self.ending_result = 
+        if np.any(self.board == 0) is False:
+            self.is_ending = True
 
     def only_one_side(self):
-        challenger = 0
-        opposite = 0
-        for line in self.board:
-            for i in line:
-                if i < 0:
-                    return
-        self.winner = 1
-        self.ending_message = True
+        if np.any(self.board < 0) is False:
+            self.is_ending = True
 
     # option
     def one_line_num(self):
         pass
 
     def check_range(self, x, y):
-        if (0 <= x < self.data.board_size) and (0 <= y < self.data.board_size):
+        if (0 <= x < len(self.board)) and (0 <= y < len(self.board)):
             return False
         else:
             return True
@@ -186,25 +119,21 @@ class EndingRule:
                 if i < 0:
                     poss.append((x, y))
                     poss2.append((x, y))
-        # print('why not poss', poss)
-        result = None
-        availalbe = None
-        availalbe2 = None
+        available = None
+        available2 = None
         
-        if self.obj_type == 1:
-            _, _, availalbe = self.get_stones(poss, 0, 0)
+        if self.game_data.problem == 1:
+            _, _, available = self.get_stones(poss, 0, 0)
+            print('available', available)
         else:
-            print('rule2')
-            _, _, availalbe = self.get_stones(poss, 0, 0)
-            _, _, availalbe2 = self.get_stones(poss2, 0, 1)
-            pass
-        print('available', availalbe)
-        print('available2', availalbe2)
-        if availalbe or availalbe2:
+            _, _, available = self.get_stones(poss, 0, 0)
+            _, _, available2 = self.get_stones(poss2, 0, 1)
+            print('available2', available2)
+
+        if available or available2:
             pass
         else:
-            print('nonononono')
-            self.available = False
+            self.is_ending = True
 
     def get_stones(self, poss, whose, space):
         # if space == 1:
@@ -255,3 +184,12 @@ class EndingRule:
                             result = True
             pos_r = pos
         return result, pos_r, eight_dir_poss
+
+    def count_stone(self):
+        if (self.board > 0).sum() > (self.board < 0).sum():
+            self.winner = 1
+        elif (self.board > 0).sum() < (self.board < 0).sum():
+            self.winner = -1
+        else:
+            self.winner = 0
+

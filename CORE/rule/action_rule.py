@@ -3,107 +3,70 @@ import numpy as np
 
 
 class ActionRule:
+
     def __init__(self):
         self.action_message = None
-        self.rule_condition = [self.passs, self.surround, self.adjacent]
-        self.rule_direction = [self.passs, self.width, self.height, self.cross, self.diagonal, self.eight_dir]
-        self.rule_method = [self.passs, self.reverse, self.remove]
+        self.rule_condition = {0: self.nothing, 1: self.adjacent}
+        self.rule_direction = {0: self.nothing, 1: self.width, 2: self.height, 3: self.cross, 4: self.diagonal, 5: self.eight_dir}
+        self.rule_method = {0: self.nothing, 1: self.reverse, 2: self.remove}
 
-        self.data = None
+        self.game_data = None
         self.board = None
-        self.placement = None
 
-        self.x1 = None
-        self.y1 = None
-        self.x = None
-        self.y = None
-
+        self.curr_x = None
+        self.curr_y = None
+        self.next_x = None
+        self.next_y = None
         self.obj_number = None
-        self.obj_rule = None
 
-        self.obj_condition = None
-        self.obj_dir = None
-        self.obj_method = None
+        self.rule = None
+        self.condition = None
+        self.dir = None
+        self.method = None
 
         self.rule_list = []
         self.dir_list = []
         self.stone_list = []
 
-    def apply_action_rule(self, game_data, board, placement):
-        self.setting(game_data, board, placement)
-        if bool(game_data.action_rule) is False:
-            return 'OK', board
+    def nothing(self):
+        pass
 
-        self.add_direction_rule()
-        self.add_condition_rule()
-        self.add_method_rule()
+    def apply_action_rule(self, game_data, placement_data):
+        self.setting(game_data, placement_data)
 
-        for function in self.rule_list:
-            function()
-            if self.action_message is not None:
-                raise Exception(self.action_message)
-                # return self.action_message, self.board
+        self.method()
 
-        if self.action_message is None:
-            self.action_message = 'OK'
+        return 'OK', self.board
 
-        return self.action_message, self.board
+    def setting(self, game_data, placement_data):
+        self.game_data = game_data
+        self.board = placement_data.board
 
-    def setting(self, data, board, placement):
-        self.data = data
-        try:
-            if '>' in placement:
-                self.x1 = list(map(int, placement.split('>')[0].split()))[0]
-                self.y1 = list(map(int, placement.split('>')[0].split()))[1]
+        self.curr_x = placement_data.curr_x
+        self.curr_y = placement_data.curr_y
+        self.next_x = placement_data.next_x
+        self.next_y = placement_data.next_y
+        self.obj_number = placement_data.obj_number
 
-                self.x = list(map(int, placement.split('>')[1].split()))[0]
-                self.y = list(map(int, placement.split('>')[1].split()))[1]
-                # print(self.x1,self.y1,self.x,self.y)
-                self.obj_number = str(board[self.x][self.y])
-                # print(board, self.obj_number)
-            else:
-                self.obj_number = list(map(str, placement.split()))[0]
-
-                self.x = list(map(int, placement.split()))[1]
-                self.y = list(map(int, placement.split()))[2]
-
-                self.x1 = None
-                self.y1 = None
-            self.board = board
-            self.placement = placement
-            self.rule_list.clear()
-            if self.obj_number in data.action_rule:
-                self.obj_rule = data.action_rule[self.obj_number]
-                self.obj_condition = self.obj_rule[0]
-                self.obj_dir = self.obj_rule[1]
-                self.obj_method = self.obj_rule[2]
-            self.action_message = None
-            # print('asdasd')
-        except Exception as e:
-            self.action_message = e
-            raise Exception(self.action_message)
-
-    def add_condition_rule(self):
-        self.rule_list.append(self.rule_condition[self.obj_condition])
-
-    def add_direction_rule(self):
-        self.rule_list.append(self.rule_direction[self.obj_dir])
-
-    def add_method_rule(self):
-        self.rule_list.append(self.rule_method[self.obj_method])
+        self.rule = game_data.action_rule[placement_data.obj_number]
+        self.condition = self.rule_condition[self.rule[0]]
+        self.dir = self.rule_direction[self.rule[1]]
+        self.method = self.rule_method[self.rule[2]]
 
     # condition
     def surround(self):
         pass
 
     def adjacent(self):
+        self.dir()
+        poses = []
         for d in self.dir_list:
-            next_x = self.x + d[0]
-            next_y = self.y + d[1]
-            if self.check_range(next_x, next_y):
+            x = self.next_x + d[0]
+            y = self.next_y + d[1]
+            if self.check_range(x, y):
                 continue
-            if self.board[next_x][next_y] < 0:
-                self.board[next_x][next_y] *= -1
+            poses.append((x, y))
+        return poses
 
     # direction
     def width(self):
@@ -122,7 +85,10 @@ class ActionRule:
         self.dir_list = [(0, 1), (1, 0), (0, -1), (-1, 0), (-1, 1), (1, 1), (1, -1), (-1, -1)]
 
     def reverse(self):
-        pass
+        poses = self.adjacent()
+        for pos in poses:
+            if self.board[pos[0]][pos[1]] < 0:
+                self.board[pos[0]][pos[1]] *= -1
 
     def remove(self):
         pass
@@ -131,10 +97,7 @@ class ActionRule:
         #     self.board[self.x][self.y] = self.obj_number
 
     def check_range(self, x, y):
-        if (0 <= x < self.data.board_size) and (0 <= y < self.data.board_size):
+        if (0 <= x < len(self.board)) and (0 <= y < len(self.board)):
             return False
         else:
             return True
-
-    def passs(self):
-        pass

@@ -1,19 +1,18 @@
 import numpy as np
 import os
 
-from rule.placement_rule import PlacementRule
-from rule.action_rule import ActionRule
-from rule.ending_rule import EndingRule
+from rule.rules import Rules
 from util.game_data import GameData
 from util.execute_code import Execution
-
+from util.placement_data import PlacementData
 
 def test():
     print('test')
 
 
 class GameManager:
-    def __init__(self, challenger, oppositer, placement_rule, action_rule, ending_rule, board_size, board_info, obj_num, problem):
+
+    def __init__(self, challenger, oppositer, placement_rule, action_rule, ending_rule, board_size, board_info, problem):
         self.board = np.zeros((board_size, board_size), dtype='i')
         self.board_info = board_info
         self.board_size = board_size
@@ -24,10 +23,8 @@ class GameManager:
         self.challenger = challenger
         self.opposite = oppositer
 
-        self.game_data = GameData(placement_rule, action_rule, ending_rule, board_size, board_info, obj_num, problem)
-        self.placement_rule = PlacementRule()
-        self.action_rule = ActionRule()
-        self.ending_rule = EndingRule()
+        self.game_data = GameData(placement_rule, action_rule, ending_rule, board_size, board_info, problem)
+        self.rules = Rules()
 
         self.execution = Execution()
 
@@ -38,7 +35,7 @@ class GameManager:
         self.error_msg = None
 
     def play_game(self):
-        print('## Start Game ##')
+        print('###### Start Game ######')
         total_turn = 0
         total_turn_limit = 100 # self.game_data.board_size ** 3
         is_ending = False
@@ -51,7 +48,7 @@ class GameManager:
         self.compile_user_code()
 
         while not is_ending:
-            print('######')
+            print('## turn start ##')
             if total_turn > total_turn_limit:
                 print("total_turn over")
                 self.error_msg = 'total turn over'
@@ -60,7 +57,7 @@ class GameManager:
 
             self.make_board_data()
 
-            ## Execute user code
+            # Execute user code
             output = None
             print('Execute user program...', end='')
             try:
@@ -83,12 +80,15 @@ class GameManager:
             print('Turn :', self.check_turn)
             print(self.board)
 
-            ## Start check rule
+            placement_data = PlacementData(output, self.board)
+            # Start check rule
 
-            # Check Placement Rule
+            """
+            Check Placement Rule
+            """
             print('Check placement rule...', end='')
             try:
-                check_placement, new_board = self.placement_rule.check_placement_rule(self.game_data, self.board, output)
+                check_placement, new_board = self.rules.check_placement_rule(self.game_data, placement_data)
             except Exception as e:
                 self.error_msg = f'Error in check placement rule : {e}'
                 # print(self.error_msg)
@@ -99,7 +99,7 @@ class GameManager:
             self.board = new_board
             print('Check action rule...', end='')
             try:
-                apply_action, new_board = self.action_rule.apply_action_rule(self.game_data, self.board, output)
+                apply_action, new_board = self.rules.apply_action_rule(self.game_data, placement_data)
             except Exception as e:
                 self.error_msg = f'Error in check action rule : {e}'
                 # print(self.error_msg)
@@ -110,7 +110,7 @@ class GameManager:
             self.board = new_board
             print('Check ending rule...', end='')
             try:
-                is_ending, winner = self.ending_rule.check_ending(self.game_data, self.board, output) # ending_result = self.ending_rule.check_ending(self.game_data, self.board, output)
+                is_ending, winner = self.rules.check_ending(self.game_data, placement_data)
             except Exception as e:
                 self.error_msg = f'Error check ending rule : {e}'
                 # print(self.error_msg, '\n')
@@ -158,7 +158,6 @@ class GameManager:
                 self.error_msg = str(self.error_msg) + f'--> placement = {output}'
         
         print(self.error_msg)
-        # print('winner', winner)
 
         return winner, self.board_record, self.placement_record, match_result, self.error_msg
 
@@ -182,8 +181,7 @@ class GameManager:
                 print('Receive Borad')
                 print(self.board)
 
-            ## Execute user code
-            
+            # Execute user code
             if i == 1:  # only code turn
                 try:
                     print('Execute user program...', end='')
@@ -199,7 +197,7 @@ class GameManager:
                 print('User placement:', placement,'...', end='')
                 output = placement
             print('OK', output)
-            ## Start Check Rule
+            # Start Check Rule
 
             # Check Placement Rule
             print('Check Placement Rule...', end='')
