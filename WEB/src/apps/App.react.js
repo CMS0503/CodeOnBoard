@@ -29,8 +29,8 @@ function App(props: Props): React.Node {
           <Route exact path="/code/my/" component={CodeList} />
           <Route exact path="/matchlog/:id" component={Matchlog} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/rankingProblem/:id" component={RankingProblem} />
-          <Route exact path="/ranking" component={Ranking} />
+          {/*<Route exact path="/rankingProblem/:id" component={RankingProblem} />*/}
+          {/*<Route exact path="/ranking" component={Ranking} />*/}
           <Route exact path="/addProblem" component={AddProblem} />
           <Route exact path="/addProblem2" component={AddProblem2} />
           <Route exact path="/addProblem3" component={AddProblem3} />
