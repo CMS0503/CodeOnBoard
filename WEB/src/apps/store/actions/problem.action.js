@@ -6,6 +6,8 @@ export const SET_LANGUAGE = "SET_LANGUAGE"
 export const SET_EDITOR = "SET_EDITOR"
 export const SET_TITLE = "SET_TITLE"
 export const SET_ID = "SET_ID"
+export const SET_CODELIST = "SET_CODELIST"
+
 
 export function submit(param){
     return {
@@ -61,4 +63,9 @@ export function setId(param){
     };
 }
 
-
+export function setCodeList(param){
+    return{
+        type: SET_CODELIST,
+        payload: param
+    }
+}

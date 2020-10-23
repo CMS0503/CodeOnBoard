@@ -6,20 +6,18 @@ import { Button, Page, Card, Table, Loader } from "tabler-react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import SiteWrapper from "./SiteWrapper.react";
 import ProblemNav from "./problemNav.react"
-import * as Action from "../store/actions/codeList.action";
 import SelfBattle from "./selfBattle/selfBattle.react"
+import * as Action from "../store/actions/problem.action"
+
 
 function CodeList({match}) {
     const dispatch = useDispatch();
     const userId = localStorage.getItem("pk")
     // const problemId = document.location.href.split("codelist/")[1]
     const languageList2 = {1: "Python", 2: "C", 3: "C++"}
-    const { codeList } = useSelector(state => ({ 
-        codeList: state.codeList.codeList,
-    }))
-
-    const { problemId } = useSelector(state => ({
-        problemId:state.problem.id
+    const { codeList, problemId } = useSelector(state => ({
+        codeList: state.problem.codeList,
+        problemId: state.problem.id
     }))
 
     const url = "/problem/" + problemId

@@ -7,6 +7,7 @@ import {
     SET_EDITOR,
     SET_TITLE,
     SET_ID,
+    SET_CODELIST,
 } from '../actions/problem.action';
 
 const initState = {
@@ -18,6 +19,7 @@ const initState = {
     editor: null,
     title:null,
     id: null,
+    codeList: null,
 }
 
 const problem = (state = initState, action) => {
@@ -38,6 +40,8 @@ const problem = (state = initState, action) => {
             return {...state, title:action.payload}
         case SET_ID:
             return {...state, id:action.payload}
+        case SET_CODELIST:
+            return {...state, codeList:action.payload.reverse()};
         default:
             return state;
     }
