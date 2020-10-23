@@ -47,7 +47,7 @@ class PlacementRule:
 
     def segyun_move(self):
         result = []
-        result.append(self.util.move(direction='Eight', distance=(2, 2)))
+        result.append(self.util.move(direction='EIGHT', distance=(2, 2)))
         result.append(self.util.move(direction='CUSTOM', distance=(1, 2)))
         result.append(self.util.move(direction='CUSTOM', distance=(2, 1)))
 
@@ -55,13 +55,13 @@ class PlacementRule:
             return True
 
     def king(self):
-        pass
+        return self.util.move(direction='EIGHT', distance=(1, 1))
 
     def pawn(self):
-        pass
+        return self.util.move(direction='CROSS', distance=(1, 1))
 
     def rook(self):
-        pass
+        return self.util.move(direction='CROSS', distance=(0, 0))
 
     def queen(self):
         pass

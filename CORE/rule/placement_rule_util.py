@@ -81,11 +81,11 @@ class PlacementRuleUtil:
 
         if max_distance == 0:
             max_distance = 999
-        if direction == 'CROSS' or 'Eight':
+        if direction == 'CROSS' or 'EIGHT':
             if (x_inc == 0 and self.check_in_range(y_inc, min=min_distance, max=max_distance+1)) or \
                     (y_inc == 0 and self.check_in_range(x_inc, min=min_distance, max=max_distance+1)):
                 return True
-        if direction == 'DIAGONAL' or 'Eight':
+        if direction == 'DIAGONAL' or 'EIGHT':
             if x_inc == y_inc and \
                     self.check_in_range(x_inc, min=min_distance, max=max_distance+1) and \
                     self.check_in_range(y_inc, min=min_distance, max=max_distance+1):
@@ -99,6 +99,8 @@ class PlacementRuleUtil:
         return False
 
     def update_board(self):
+        print(">>>>>>>>>>")
+        print(self.placement_type)
         if self.placement_type == 'move':
             self.board[self.curr_x][self.curr_y] = 0
             self.board[self.next_x][self.next_y] = self.obj_number
