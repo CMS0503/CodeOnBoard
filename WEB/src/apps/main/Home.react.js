@@ -12,12 +12,6 @@ import './Home.css'
 function Home() {
   return (
     <SiteWrapper>
-      {/* <Button onClick={()=>{
-          localStorage.removeItem("jwt");
-          localStorage.removeItem("userName");
-          localStorage.removeItem("pk");
-          localStorage.removeItem("problemId");
-      }}>로그아웃</Button> */}
       <GalleryCard className="HomeImage">
         <GalleryCard.Image
           className='mb-0'
