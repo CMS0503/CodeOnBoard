@@ -85,7 +85,6 @@ class CodeViewSet(viewsets.ModelViewSet):
             "challenger": data['author'],
             "challenger_code": data['code'],
             "challenger_language": language.name,
-            "obj_num": rule["obj_num"],
             "placement": rule["placement"],
             "action": rule["action"],
             "ending": rule["ending"],

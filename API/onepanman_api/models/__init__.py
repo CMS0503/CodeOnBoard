@@ -7,7 +7,9 @@ from .userInfo import UserInfo
 from .classs import Class
 from .classProblem import ClassProblem
 from .userGroup import UserGroup
-from .rule import Rule
+from .placementRule import PlacementRule
+from .actionRule import ActionRule
+from .endingRule import EndingRule
 
 __all__ = ['Problem', 'Language', 'Class', 'Code', 'ClassProblem', 'UserGroup', 'Game', 'GroupInfo',
-           'UserInfo', 'Rule']
+           'UserInfo','PlacementRule', 'ActionRule', 'EndingRule']

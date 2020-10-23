@@ -4,5 +4,5 @@ from .. import models
 
 class RuleSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Code
+        model = models.PlacementRule
         fields = '__all__'

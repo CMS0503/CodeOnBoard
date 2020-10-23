@@ -82,10 +82,6 @@ class GameManager:
 
             placement_data = PlacementData(output, self.board)
             # Start check rule
-
-            """
-            Check Placement Rule
-            """
             print('Check placement rule...', end='')
             try:
                 check_placement, new_board = self.rules.check_placement_rule(self.game_data, placement_data)
@@ -152,11 +148,11 @@ class GameManager:
             if output == '':
                 print('no output')
                 if self.error_msg != 'Time Over':
-                    self.error_msg = 'RunTimeError' 
+                    self.error_msg = 'RunTimeError'
 
             else:
                 self.error_msg = str(self.error_msg) + f'--> placement = {output}'
-        
+
         print(self.error_msg)
 
         return winner, self.board_record, self.placement_record, match_result, self.error_msg
@@ -239,7 +235,7 @@ class GameManager:
             if i == 0:
                 print('# After user action board')
                 print(self.board)
-                self.add_data(self.board, output) 
+                self.add_data(self.board, output)
 
             else:
                 self.add_data(self.board*(-1), output)
