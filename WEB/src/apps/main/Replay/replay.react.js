@@ -42,12 +42,8 @@ function Replay( {match} ) {
         }
     }
 
-    const header = {
-        'Authorization' : 'jwt ' + window.localStorage.getItem('jwt')
-        }
-
     React.useEffect(() =>{
-        api.getGames()
+        api.getGames(problemId)
         .then(response =>{
             const data = response.data;
             console.log(data)
