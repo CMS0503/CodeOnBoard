@@ -6,6 +6,7 @@ import { useState } from "react"
 import { useDispatch } from "react-redux";
 import { Page, Grid, GalleryCard } from "tabler-react";
 import SiteWrapper from "./SiteWrapper.react"; 
+import * as api from "../api.react";
 
 function ProblemList() {
   const dispatch = useDispatch();
@@ -13,8 +14,7 @@ function ProblemList() {
   
   React.useEffect(() => {
     console.log("====> userEffect")
-		axios
-		.get('http://203.246.112.32:8000/api/v1/problem/')
+		api.getProblems()
 		.then(response => {
 			setPosts(response.data.results);
     })

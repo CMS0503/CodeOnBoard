@@ -7,6 +7,7 @@ import axios from "axios";
 import * as Action from "../../../store/actions/problem.action"
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import "../../../../../node_modules/codemirror/theme/material.css";
+import * as api from "../../../api.react";
 
 var header = {
   'Authorization' : 'jwt ' + window.localStorage.getItem('jwt')
@@ -45,8 +46,7 @@ function CodeEditor(props)  {
         name : codeName
       }
       console.log("Post data==>", data)
-      axios
-      .post("https://cors-anywhere.herokuapp.com/http://203.246.112.32:8000/api/v1/code/", data) 
+      api.postCode(data)
       .then(response =>{
         dispatch(Action.submit(true))
         window.scrollTo(0, 0)
@@ -58,7 +58,7 @@ function CodeEditor(props)  {
 
     React.useEffect(() =>{
       if(window.localStorage.getItem("codeMode") === "update"){
-        axios.get(`https://cors-anywhere.herokuapp.com/http://203.246.112.32:8000/api/v1/code/${window.sessionStorage.getItem("selectedCodeId")}`, { headers: header})
+          api.getCode(window.localStorage.getItem('selectedCodeId'))
           .then((response) => {
             console.log("data==>",response.data)
             dispatch(Action.writeCode(response.data.code));

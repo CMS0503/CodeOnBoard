@@ -10,6 +10,8 @@ import * as Action from "../../store/actions/replay.action";
 import "../../../../node_modules/tabler-react/dist/Tabler.css"
 import "../Home.css"
 import ViewReplayPage from "./viewReplayPage"
+import * as api from "../../api.react"
+import problem from "../../store/reducers/problem.reducer";
 
 
 function Replay( {match} ) {
@@ -20,12 +22,9 @@ function Replay( {match} ) {
     const { replayList, isOpen, selectedGameId } = useSelector(state => ({
         replayList:state.replay.replayList,
         isOpen:state.replay.isOpen,
-        selectedGameId:state.replay.gameId
+        selectedGameId:state.replay.gameId,
+        problemId:state.problem.id
         }))
-
-    const header = {
-        'Authorization' : 'jwt ' + window.localStorage.getItem('jwt')
-        }
 
     function getWinner(_challenger, _opposite, _winner){
         var winnerId = null
@@ -43,36 +42,19 @@ function Replay( {match} ) {
         }
     }
 
-    function getScore(_challenger, _opposite, _challengerScore, _oppositeScore){
-        var score = null;
-        if(userId === _challenger){
-            score = _challengerScore;
+    const header = {
+        'Authorization' : 'jwt ' + window.localStorage.getItem('jwt')
         }
-        else{
-            score = _oppositeScore;
-        }
-        return score
-    }
-
-    function getScoreFlu(_challenger, _opposite, _challengerScoreFlu, _oppositeScoreFlu){
-        var scoreFlu = null;
-        if(userId === _challenger){
-            scoreFlu = _challengerScoreFlu;
-        }
-        else{
-            scoreFlu = _oppositeScoreFlu;
-        }
-        return scoreFlu
-    }
 
     React.useEffect(() =>{
-        axios.get(`http://203.246.112.32:8000/api/v1/game/my`, {headers: header})
+        api.getGames()
         .then(response =>{
             const data = response.data;
+            console.log(data)
             dispatch(Action.setReplayList(data))
         })
     },[])
-
+    console.log('problemId', problemId)
     return(
         <SiteWrapper>
             <Page.Content>
@@ -86,7 +68,6 @@ function Replay( {match} ) {
                                 <Table.ColHeader className="cth">대전 날짜</Table.ColHeader>
                                 <Table.ColHeader className="cth">결과</Table.ColHeader>
                                 <Table.ColHeader className="cth">리플레이 보기</Table.ColHeader>
-                                <Table.ColHeader className="cth">점수</Table.ColHeader>
                             </tr>
                             </Table.Header>
                             <Table.Body>
@@ -105,10 +86,6 @@ function Replay( {match} ) {
                                                 {getWinner(replay.challenger, replay.opposite, replay.winner)}
                                             <Table.Col className="tb">
                                                 <ViewReplayPage tmp_id={replay.id}/>
-                                            </Table.Col>
-                                            <Table.Col className="tb">
-                                                {`${getScore(replay.challenger, replay.opposite, replay.challenger_score, replay.opposite_score)}
-                                                (${getScoreFlu(replay.challenger, replay.opposite, replay.challenger_score_flu, replay.opposite_score_flu)})`}
                                             </Table.Col>
                                         </Table.Row>
                                     )

@@ -1,18 +1,10 @@
 import Phaser from 'phaser'
-import axios from 'axios'
+import * as api from '../../../api.react'
 
 const boardSize = 627;
 const modalWidth = 1050;
 const modalHeight = 700;
 // var renderSpeed = 500;
-
-const version = {
-  'version': 'v1',
-}
-
-var header = {
-  'Authorization' : 'jwt ' + window.localStorage.getItem('jwt')
-}
 
 class Scene4 extends Phaser.Scene {
   constructor() {
@@ -109,7 +101,7 @@ class Scene4 extends Phaser.Scene {
               this.boardStatus.challengerPlacement.push(bodyData.placement_info);
               
               this.boardStatus.isLoading = true;
-              axios.post(`http://203.246.112.32:8000/api/${version.version}/selfBattle/`, bodyData, { headers: header})
+              api.selfBattle(bodyData)
               .then((response) => {
                 console.log(response)
                 this.boardStatus.isLoading = false;

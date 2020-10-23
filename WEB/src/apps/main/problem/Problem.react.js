@@ -10,6 +10,8 @@ import CodeEditor from "../../main/problem/components/CodeEditor.react"
 import { useSelector, useDispatch } from "react-redux"
 import * as Action from "../../store/actions/problem.action";
 import "../Home.css"
+import * as api from "../../api.react";
+
 function Problem( {match , history} ) {
     // const selectedId = window.localStorage.getItem('userName'); Change "/codes/my" to "/codes/userName"
     const problemId = document.location.href.split("problem/")[1]
@@ -28,8 +30,7 @@ function Problem( {match , history} ) {
 
 
     React.useEffect(() => {
-        axios
-        .get(`https://cors-anywhere.herokuapp.com/http://203.246.112.32:8000/api/v1/problem/${problemId}`,{'access-control-allow-origin': '*'})
+        api.getProblem(problemId)
         .then(response =>{
             dispatch(Action.getDescription(response.data.description))
             dispatch(Action.setTitle(response.data.title))

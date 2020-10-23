@@ -10,6 +10,7 @@ import * as Action from "../../store/actions/match.action"
 import * as pAction from "../../store/actions/problem.action"
 import { call, delay } from 'redux-saga/effects'
 import "../../../../node_modules/tabler-react/dist/Tabler.css"
+import * as api from "../../api.react"
 import "../Home.css"
 
 function Match({match}) {
@@ -65,9 +66,7 @@ function Match({match}) {
     var loader = <Text className="mb-4 strong">{gameStatus}</Text>
     
     function getProblem(problemId){
-        console.log("==> getProblem")
-        axios
-        .get(`https://cors-anywhere.herokuapp.com/http://203.246.112.32:8000/api/v1/problem/${problemId}`,{})
+        api.getProblem(problemId)
         .then(response =>{
             problem = response.data
             dispatch(Action.setThumbnail(problem.thumbnail))
@@ -80,7 +79,7 @@ function Match({match}) {
 
     function getUserInfo(type, userId){
         console.log(`==> getUserinfo ${type}`, userId)
-        axios.get(`https://cors-anywhere.herokuapp.com/http://203.246.112.32:8000/api/v1/userfullInfo/${userId}`, {})
+        api.getUserInfo(userId)
         .then(response => {
         //    getUserTier(userid,problemid,type,response.data.username, language);
             
@@ -95,66 +94,35 @@ function Match({match}) {
   
     }
 
-    function getUserInfoInProblem(type, userId, problemId){
-        console.log(`==> getuiip ${type}`)
-        axios.get(`http://203.246.112.32:8000/api/v1/userInformationInProblem/?user=${userId}&problem=${problemId}`, {})
-        .then(response => {
-        //    getUserTier(userid,problemid,type,response.data.username, language);
-            if(type === "challenger"){
-                challengerInfoInProblem = response.data.results[0]
-                dispatch(Action.setTier(challengerInfoInProblem.tier))
-                dispatch(Action.setScore(challengerInfoInProblem.score))
-            }
-            else{
-                
-                oppositeInfoInProblem = response.data.results[0]
-                dispatch(Action.setTier2(oppositeInfoInProblem.tier))
-                dispatch(Action.setScore2(oppositeInfoInProblem.score))
-            }
-            
-        })
-        .catch(error => {
-           // console.log(error);
-        })
-  
-    }
-
     function getCodeList(userId, problemId){
         console.log("==> getcodelist");
-        axios.get(`http://203.246.112.32:8000/api/v1/code/?author=${userId}&problem=${problemId}&available_game=true`)
+        api.getCodeList(userId, problemId)
         .then(response => {
             dispatch(Action.setCodeList(response.data.results))
             console.log(Object.keys(codeList).length);
         })
     }
 
-    function matching(userID, problemId, codeId){
+    function matching(userId, problemId, codeId){
         console.log("===> matching");
         if (isMatching){
            return;
         }
-        const config = {
-           'method' : 'POST',
-           'url': 'http://203.246.112.32:8000/api/v1/match/',
-        //    'headers': {
-        //       'Authorization' : 'jwt ' + window.localStorage.getItem('jwt_access_token')
-        //     },
-           'data': {
-              'userid': userID,
-              'problemid': problemId,
-              'codeid': codeId
-           } 
+
+        const data = {
+            'userid': userId,
+            'problemid': problemId,
+            'codeid': codeId
         }
-        
-        axios(config)
+
+        api.matching(data)
         .then(response => {
             
             const data = response.data;
             console.log("Matching >>", data.opposite_language);
             dispatch(Action.setLanguage2(data.opposite_language));
             getUserInfo("opposite", data.opposite);
-            getUserInfoInProblem("opposite", data.opposite, data.problem)
-            
+
             dispatch(Action.setGameId(data.match_id));
             dispatch(Action.setIsMatching(true));
             dispatch(Action.setGameStatus('게임중...'));
@@ -167,7 +135,6 @@ function Match({match}) {
     
     React.useEffect(() => {
         getUserInfo("challenger", userId);
-        getUserInfoInProblem("challenger", userId, problemId)
         getProblem(problemId)
         getCodeList(userId, problemId)
      },[]);
@@ -175,7 +142,7 @@ function Match({match}) {
     React.useEffect(() => {
         if(isMatching){
         const repeat = setInterval(() => {
-            axios.get(`http://203.246.112.32:8000/api/v1/game/${gameId}/`, {}) // {headers:header}
+            api.getGame(gameId)
             .then(response => {
                const result = response.data.result;
                // console.log(result);
@@ -220,11 +187,7 @@ function Match({match}) {
                             <Card xl={4} className="mt-8 modal-dialog-centered" title="user 1">
                                 <Avatar className= "mt-2" icon="users" size="xxl"/>
                                 <Text className="mt-1 " size="h2">User1</Text>
-                                <Text className="mt-1" size="h4">Tier : {tier}</Text>
-                                <Text className="mt-1" size="h4">Score : {score}</Text>
                                 <Text className="mt-1" size="h4">Language : {language}</Text>
-                                <Text className="mt-1" size="h4">Win : 21</Text>
-                                <Text className="mt-1" size="h4">Lose : 15</Text>
                             </Card>
                         </Grid.Col>
                         <Grid.Col>
@@ -267,11 +230,7 @@ function Match({match}) {
                             <Card xl={4} className="mt-8 modal-dialog-centered" title="user 2">
                                 <Avatar className= "mt-2" icon="users" size="xxl"/>
                                 <Text className="mt-1" size="h2">user2</Text>
-                                <Text className="mt-1" size="h4">Tier : {tier2}</Text>
-                                <Text className="mt-1" size="h4">Score : {score2}</Text>
                                 <Text className="mt-1" size="h4">Language : {language2}</Text>
-                                <Text className="mt-1" size="h4">Win : 22</Text>
-                                <Text className="mt-1" size="h4">Lose : 20</Text>
                             </Card>
                         </Grid.Col>
                     </Grid.Row>
