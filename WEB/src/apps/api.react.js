@@ -49,11 +49,19 @@ export function getCode(codeId){
     // ${corsUrl}/
 }
 
-export function getGames(){
-    const header = {
-        'Authorization': authJWT
+export function getGames(problemId){
+    console.log('getGames', problemId)
+    const params = {
+        problem:problemId
     }
-    return axios.get(`/api/v1/game/my`, {headers: header})
+    const header = {
+        'Authorization': authJWT,
+    }
+    const config = {
+        params:params,
+        headers:header
+    }
+    return axios.get(`/api/v1/game/my`,  config)
 }
 
 export function selfBattle(bodyData){
