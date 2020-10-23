@@ -8,9 +8,12 @@ class PlacementData:
         self.next_x = None
         self.next_y = None
         self.obj_number = None
-        self.set_placement()
 
         self.placement_type = None
+
+        self.set_placement()
+
+
 
     def set_placement(self):
         print('set placement')
