@@ -5,6 +5,7 @@ import replay from './replay.reducer'
 import rankingProblem from './rankingProblem.reducer'
 import auth from "../../redux/reducers/auth"
 import addProblem from "../reducers/addProblem.reducer"
+import submitRegister from "./register.reducer";
 import { persistReducer } from "redux-persist";
 import storage from 'redux-persist/lib/storage/session'
 
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   match,
   replay,
   // rankingProblem,
-  addProblem
+  addProblem,
+  submitRegister
 });
 
 const persistConfig = {

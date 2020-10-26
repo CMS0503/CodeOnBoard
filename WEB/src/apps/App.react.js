@@ -14,6 +14,8 @@ import RankingProblem from "./main/rankingProblem/rankingProblem.react";
 import AddProblem from "./main/addProblem/addProblem.react"
 import AddProblem2 from "./main/addProblem/addProblem2.react"
 import AddProblem3 from "./main/addProblem/addProblem3.react"
+import RegisterPage from "./authPage/RegisterPage.react";
+
 // import test from "./test.js"
 
 function App(props: Props): React.Node {
@@ -28,6 +30,7 @@ function App(props: Props): React.Node {
           <Route exact path="/match/:id" component={Match} />
           <Route exact path="/code/my/" component={CodeList} />
           <Route exact path="/matchlog/:id" component={Matchlog} />
+          <Route exact path="/register" component={RegisterPage} />
           <Route exact path="/login" component={Login} />
           {/*<Route exact path="/rankingProblem/:id" component={RankingProblem} />*/}
           {/*<Route exact path="/ranking" component={Ranking} />*/}
