@@ -7,7 +7,7 @@ import Replay from "./main/Replay/replay.react"
 import Match from "./main/match/match.react"
 import CodeList from "./main/codeList.react"
 import Matchlog from "./main/matchlog.react"
-import Login from "./components/authentication/LoginPage"
+import Login from "./authPage/LoginPage"
 import Ranking from "./main/ranking.react"
 import "tabler-react/dist/Tabler.css";
 import RankingProblem from "./main/rankingProblem/rankingProblem.react";

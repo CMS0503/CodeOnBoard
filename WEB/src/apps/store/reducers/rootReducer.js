@@ -3,14 +3,13 @@ import problem from './problem.reducer';
 import match from './match.reducer'
 import replay from './replay.reducer'
 import rankingProblem from './rankingProblem.reducer'
-import auth from "../../redux/reducers/auth"
+import auth from "../../store/reducers/auth.react"
 import addProblem from "../reducers/addProblem.reducer"
 import submitRegister from "./register.reducer";
 import { persistReducer } from "redux-persist";
 import storage from 'redux-persist/lib/storage/session'
 
-
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   auth,
   problem,
   match,
@@ -19,6 +18,16 @@ const rootReducer = combineReducers({
   addProblem,
   submitRegister
 });
+
+const rootReducer = (state, action) => {
+  if(action.type === 'LOGOUT_USER'){
+    debugger
+    storage.removeItem('persist:root')
+    state = undefined
+  }
+
+  return appReducer(state, action)
+}
 
 const persistConfig = {
   key: "root",

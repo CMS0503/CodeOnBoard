@@ -8,7 +8,7 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux';
 import rootReducer from './apps/store/reducers/rootReducer'
 import App from "./apps/App.react";
-import configureStore from "./apps/redux/configureStore";
+import configureStore from "./apps/store/configureStore";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 

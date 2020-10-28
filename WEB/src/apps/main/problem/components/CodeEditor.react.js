@@ -7,7 +7,7 @@ import axios from "axios";
 import * as Action from "../../../store/actions/problem.action"
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import "../../../../../node_modules/codemirror/theme/material.css";
-import * as api from "../../../api.react";
+import * as api from "../../../api/api.react";
 
 var header = {
   'Authorization' : 'jwt ' + window.localStorage.getItem('jwt')

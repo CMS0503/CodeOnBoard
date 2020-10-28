@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { loginUser } from "../../redux/actions/auth";
+import { loginUser } from "../store/actions/auth.react";
 import { LoginPage as TablerLoginPage } from "tabler-react";
 import { useHistory } from "react-router-dom";
 
@@ -29,7 +29,6 @@ const LoginPage = ({ loginUser, history }) => {
   };
 
   return (
-   
     <TablerLoginPage
       strings={{ emailLabel:"ID", emailPlaceholder:"Enter ID"}}
       onSubmit={login}

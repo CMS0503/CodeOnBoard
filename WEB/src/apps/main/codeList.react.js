@@ -12,8 +12,8 @@ import * as Action from "../store/actions/problem.action"
 
 function CodeList({match}) {
     const dispatch = useDispatch();
-    const userId = localStorage.getItem("pk")
-    // const problemId = document.location.href.split("codelist/")[1]
+    const userId = localStorage.getItem("userInfo")
+        ?JSON.parse(localStorage.getItem("userInfo")).pk:null
     const languageList2 = {1: "Python", 2: "C", 3: "C++"}
     const { codeList, problemId } = useSelector(state => ({
         codeList: state.problem.codeList,

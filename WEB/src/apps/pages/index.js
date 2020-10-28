@@ -1,5 +1,4 @@
 import ForgotPasswordPage from "./ForgotPasswordPage.react";
-import LoginPage from "../authPage/LoginPage.react";
 import RegisterPage from "../authPage/RegisterPage.react";
 import Empty from "./Empty.react";
 import Error400 from "./400.react";
@@ -13,7 +12,6 @@ import ProfilePage from "../authPage/ProfilePage.react";
 
 export {
   ForgotPasswordPage,
-  LoginPage,
   RegisterPage,
   Error400,
   Error401,

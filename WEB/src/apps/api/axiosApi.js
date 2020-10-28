@@ -70,9 +70,9 @@ axiosAPI.interceptors.response.use(
 export function setNewHeaders(response) {
   // console.log("response==>",response.data.token)
   axiosAPI.defaults.headers["Authorization"] = "JWT " + response.data.token;
-  localStorage.setItem("jwt", response.data.token);
-  localStorage.setItem("pk", response.data.user.pk);
-  localStorage.setItem("userName", response.data.user.username)
+  // localStorage.setItem("jwt", response.data.token);
+  // localStorage.setItem("pk", response.data.user.pk);
+  // localStorage.setItem("userName", response.data.user.username)
   // localStorage.setItem("refresh_token", response.data.refresh);
   // console.log("token==>",localStorage.getItem("access_token") )
 }

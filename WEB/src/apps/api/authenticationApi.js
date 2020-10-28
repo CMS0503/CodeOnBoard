@@ -16,6 +16,7 @@ export async function obtainToken(username, password) {
     password,
   });
   console.log("===> rest-auth/login/", response)
+
   setNewHeaders(response);
   return response;
 }
@@ -31,10 +32,7 @@ export async function refreshToken(refresh) {
 // eslint-disable-next-line
 export async function logout(accessToken) {
   console.log("Log out")
-  localStorage.removeItem("jwt");
-  localStorage.removeItem("refresh_token");
-  localStorage.removeItem("userName");
-  localStorage.removeItem("pk");
+  debugger
   
   // TODO: invalidate token on backend
 }
