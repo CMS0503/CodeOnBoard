@@ -6,7 +6,7 @@ import { useState } from "react"
 import { useDispatch } from "react-redux";
 import { Page, Grid, GalleryCard } from "tabler-react";
 import SiteWrapper from "./SiteWrapper.react"; 
-import * as api from "../api.react";
+import * as api from "../api/api.react";
 
 function ProblemList() {
   const dispatch = useDispatch();

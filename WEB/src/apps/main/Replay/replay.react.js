@@ -10,16 +10,14 @@ import * as Action from "../../store/actions/replay.action";
 import "../../../../node_modules/tabler-react/dist/Tabler.css"
 import "../Home.css"
 import ViewReplayPage from "./viewReplayPage"
-import * as api from "../../api.react"
+import * as api from "../../api/api.react"
 import problem from "../../store/reducers/problem.reducer";
 
 
 function Replay( {match} ) {
     const dispatch = useDispatch()
-    const userId = 2
-    // const problemId = document.location.href.split("replay/")[1]
-    const problemId = 1
-    const { replayList, isOpen, selectedGameId } = useSelector(state => ({
+    const { userId, replayList, isOpen, selectedGameId, problemId } = useSelector(state => ({
+        userId : state.auth.pk,
         replayList:state.replay.replayList,
         isOpen:state.replay.isOpen,
         selectedGameId:state.replay.gameId,

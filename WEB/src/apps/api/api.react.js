@@ -1,10 +1,10 @@
 import axios from 'axios'
-import axiosAPI from "./components/api/axiosApi";
+import axiosAPI from "./axiosApi";
 
 const corsUrl = 'https://cors-anywhere.herokuapp.com'
 // const baseUrl = 'http://203.246.112.32:8000/api/v1'
 const baseUrl = 'http://127.0.0.1:8000/api/v1'
-const authJWT = 'jwt ' + window.localStorage.getItem('jwt')
+const authJWT = 'jwt ' + window.localStorage.getItem('access_token')
 
 export function register(username, email, password1, password2){
     console.log("regi", username, email, password1)

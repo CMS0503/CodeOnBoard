@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import Slider from 'phaser3-rex-plugins/plugins/slider.js';
-import * as api from '../../../api.react';
+import * as api from '../../../api/api.react';
 
 const boardSize = 627;
 const modalWidth = 1050;

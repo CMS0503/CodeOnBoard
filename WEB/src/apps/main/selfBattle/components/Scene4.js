@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import * as api from '../../../api.react'
+import * as api from '../../../api/api.react'
 
 const boardSize = 627;
 const modalWidth = 1050;

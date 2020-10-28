@@ -10,7 +10,7 @@ import CodeEditor from "../../main/problem/components/CodeEditor.react"
 import { useSelector, useDispatch } from "react-redux"
 import * as Action from "../../store/actions/problem.action";
 import "../Home.css"
-import * as api from "../../api.react";
+import * as api from "../../api/api.react";
 
 function Problem( {match , history} ) {
     // const selectedId = window.localStorage.getItem('userName'); Change "/codes/my" to "/codes/userName"

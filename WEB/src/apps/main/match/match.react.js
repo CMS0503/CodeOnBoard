@@ -10,7 +10,7 @@ import * as Action from "../../store/actions/match.action"
 import * as pAction from "../../store/actions/problem.action"
 import { call, delay } from 'redux-saga/effects'
 import "../../../../node_modules/tabler-react/dist/Tabler.css"
-import * as api from "../../api.react"
+import * as api from "../../api/api.react"
 import "../Home.css"
 
 function Match({match}) {
