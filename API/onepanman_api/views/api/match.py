@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from onepanman_api.models import Problem, Game, Code
+from onepanman_api.models import Problem, Game, Code, PlacementRule
 
 from onepanman_api.serializers.code import CodeSerializer
 import random
@@ -78,6 +78,14 @@ class Match(APIView):
             print("fail to read rule information : {}".format(e))
             return {'error': 'rule 정보 가져오기 에러'}, 0
 
+        pr_queryset = PlacementRule.objects.all()
+        n = len(rule["placement"])
+        placement = rule["placement"]
+        for i in range(1, n+1):
+            prule = placement[str(i)]
+            rule_number = int(prule[1])
+            type2 = pr_queryset.filter(rule_number=rule_number)[0].type2
+            placement[str(i)][0] = type2
 
         matchInfo = {
             "challenger": challenger_id,
@@ -89,7 +97,7 @@ class Match(APIView):
             "challenger_language": challenger_code.language.name,
             "opposite_language": opposite_code.language.name,
             "problem": int(problem_id),
-            "placement": rule["placement"],
+            "placement": placement,
             "action": rule["action"],
             "ending": rule["ending"],
             "board_size": problem.board_size,
@@ -98,7 +106,7 @@ class Match(APIView):
             "opposite_name": opposite_code.author.username
         }
 
-        #print(matchInfo)
+        print(matchInfo)
 
         return matchInfo
 
