@@ -1,5 +1,5 @@
-import { 
-    SUBMIT, 
+import {
+    SUBMIT,
     GET_DESCRIPTION,
     WRITE_CODE,
     WIRTE_CODENAME,
@@ -8,6 +8,7 @@ import {
     SET_TITLE,
     SET_ID,
     SET_CODELIST,
+    SET_CODE_ID,
 } from '../actions/problem.action';
 
 const initState = {
@@ -20,6 +21,7 @@ const initState = {
     title:null,
     id: null,
     codeList: null,
+    codeId: null,
 }
 
 const problem = (state = initState, action) => {
@@ -42,6 +44,8 @@ const problem = (state = initState, action) => {
             return {...state, id:action.payload}
         case SET_CODELIST:
             return {...state, codeList:action.payload.reverse()};
+        case SET_CODE_ID:
+            return {...state, codeId: action.payload}
         default:
             return state;
     }
