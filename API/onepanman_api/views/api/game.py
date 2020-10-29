@@ -55,11 +55,8 @@ class GameViewSet(viewsets.ModelViewSet):
         return Response(data)
 
 class MyGameView(APIView):
-
     # permission_classes = [UserReadOnly]
-
     def get(self, request, version):
-        print(request.user.pk)
         queryset = Game.objects.all().filter(challenger_code__author__pk=request.user.pk,
                                              challenger_code__problem__id=request.query_params['problem'])
         serializer = GameSerializer(queryset, many=True)
