@@ -14,20 +14,27 @@ import * as api from "../../api/api.react";
 
 function Problem( {match , history} ) {
     // const selectedId = window.localStorage.getItem('userName'); Change "/codes/my" to "/codes/userName"
-    const problemId = document.location.href.split("problem/")[1]
-
+    const userId = JSON.parse(localStorage.getItem("userInfo")).pk
     const dispatch = useDispatch();
-    const problemIsSubmit = useSelector(state => state.problem.isSubmit, []);
-    const problemDesc = useSelector(state => state.problem.desc, []);
-    
+    const { problemIsSubmit, problemDesc, problemId } = useSelector(state => ({
+       problemIsSubmit: state.problem.problemIsSubmit,
+       problemDesc: state.problem.desc,
+       problemId: state.problem.id
+    }))
+
     let _alert;
     if(problemIsSubmit === true){
-        console.log("ALERT")
         _alert = <Alert type="success" icon="check">제출 완료</Alert>
     }
 
     const _mode = window.localStorage.getItem("codeMode")
 
+    function getCodeList(){
+        api.getCodeList(userId, problemId)
+        .then(response => {
+            dispatch(Action.setCodeList(response.data))
+        })
+    }
 
     React.useEffect(() => {
         api.getProblem(problemId)
@@ -35,13 +42,14 @@ function Problem( {match , history} ) {
             dispatch(Action.getDescription(response.data.description))
             dispatch(Action.setTitle(response.data.title))
             dispatch(Action.setId(response.data.id))
+            getCodeList()
         })
     },[]);
 
     React.useEffect(()=>{
         console.log("====>", window.localStorage.getItem("codeMode"))
         return function cleanup(){
-            window.localStorage.setItem("codeMode", "post")
+            dispatch(Action.setCodeId(null))
         };
     },[])
 
@@ -55,7 +63,7 @@ function Problem( {match , history} ) {
                         <ProblemViewer desc={problemDesc} />
                     </Grid.Col>
                     <Grid.Col sm={6} lg={6} className="problem">
-                        <CodeEditor mode={_mode}></CodeEditor>                        
+                        <CodeEditor/>
                     </Grid.Col>
                 </Grid.Row>
             </Page.Content>

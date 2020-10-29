@@ -7,11 +7,12 @@ import { useDispatch } from "react-redux";
 import { Page, Grid, GalleryCard } from "tabler-react";
 import SiteWrapper from "./SiteWrapper.react"; 
 import * as api from "../api/api.react";
+import * as Action from "../store/actions/problem.action"
 
 function ProblemList() {
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
-  
+
   React.useEffect(() => {
     console.log("====> userEffect")
 		api.getProblems()
@@ -33,11 +34,7 @@ function ProblemList() {
         <Grid.Col lg={3}>
           <GalleryCard className='p-0' >
             <a href="!#" onClick = {() => {
-              console.log("onclick");
-              // dispatch(Action.setProblemIdAction(problem.id));
-              window.localStorage.setItem('selectedProblemId', problem.id);
-              window.localStorage.setItem('codeMode', "post");
-              console.log(window.localStorage.getItem('selectedProblemId'))
+              dispatch(Action.setId(problem.id));
             }}>
               <GalleryCard.Image
                 className='mb-0'
