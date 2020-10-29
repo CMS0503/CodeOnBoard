@@ -8,16 +8,17 @@ import SiteWrapper from "./SiteWrapper.react";
 import ProblemNav from "./problemNav.react"
 import SelfBattle from "./selfBattle/selfBattle.react"
 import * as Action from "../store/actions/problem.action"
-
+import * as api from "../api/api.react"
 
 function CodeList({match}) {
     const dispatch = useDispatch();
     const userId = localStorage.getItem("userInfo")
         ?JSON.parse(localStorage.getItem("userInfo")).pk:null
     const languageList2 = {1: "Python", 2: "C", 3: "C++"}
-    const { codeList, problemId } = useSelector(state => ({
+    const { codeList, problemId, codeId } = useSelector(state => ({
         codeList: state.problem.codeList,
-        problemId: state.problem.id
+        problemId: state.problem.id,
+        codeId: state.problem.codeId
     }))
 
     const url = "/problem/" + problemId
@@ -39,18 +40,17 @@ function CodeList({match}) {
                 </Table.Col>
                 <Table.Col className="tb">
                     <Button color="primary" RootComponent="a" href={url} onClick={()=>{
-                        window.localStorage.setItem("codeMode", "update")
-                        window.sessionStorage.setItem("selectedCodeId", code.id);
-                        window.sessionStorage.setItem("selectedCodeLanguageId", code.language);
+                        dispatch(Action.setCodeId(code.id))
+                        dispatch(Action.setLanguage(code.language))
                     }}>수정
                     </Button>
                 </Table.Col>
                 <Table.Col className="tb">
-                    <Button disabled color="primary" onClick={()=>{
-                        axios
-                        .delete(`https://cors-anywhere.herokuapp.com/http://203.246.112.32:8000/api/v1/code/${code.id}`,{})
+                    <Button color="primary" onClick={()=>{
+                        api.deleteCode(code.id)
                         .then(response =>{
                             alert("삭제 완료")
+                            window.location.reload(false);
                         })
                         .catch( () =>{
                         })
@@ -58,7 +58,7 @@ function CodeList({match}) {
                     </Button>
                 </Table.Col>
                 <Table.Col className="tb">
-                    <SelfBattle available={code.available_game} problemId={problemId} codeId={code.id}></SelfBattle>
+                    <SelfBattle available={code.available_game} problemId={problemId} codeId={code.id}/>
                 </Table.Col>
             </Table.Row>
             )
@@ -69,10 +69,10 @@ function CodeList({match}) {
     
     function getCodeList(){
         console.log("==> getcodelist");
-        axios.get(`http://203.246.112.32:8000/api/v1/code/?author=${userId}&problem=${problemId}`)
-        // axios.get(`http://203.246.112.32:8000/api/v1/code/?problem=${problemId}`)
+        api.getCodeList(userId, problemId)
         .then(response => {
-            dispatch(Action.setCodeList(response.data.results))
+            console.log("res >> ", response)
+            dispatch(Action.setCodeList(response.data))
             // console.log(Object.keys(codeList).length);
             console.log(codeList)
     

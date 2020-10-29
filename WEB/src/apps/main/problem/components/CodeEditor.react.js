@@ -2,12 +2,13 @@ import { UnControlled as CodeMirror } from 'react-codemirror2';
 import * as React from "react";
 import './CodeMirror.css';
 import "./CodeEditor.css";
-import { Grid, Button, Dropdown } from 'tabler-react';
+import { Grid, Button, Dropdown, Alert } from 'tabler-react';
 import axios from "axios";
 import * as Action from "../../../store/actions/problem.action"
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import "../../../../../node_modules/codemirror/theme/material.css";
 import * as api from "../../../api/api.react";
+import { useHistory } from "react-router-dom";
 
 var header = {
   'Authorization' : 'jwt ' + window.localStorage.getItem('jwt')
@@ -18,17 +19,18 @@ require('codemirror/mode/python/python.js');
 require('codemirror/mode/clike/clike.js');
 
 
-function CodeEditor(props)  {
+function CodeEditor()  {
     const dispatch = useDispatch();
-    const problemId = document.location.href.split("problem/")[1]
-    const userId = localStorage.getItem("pk")
-    const mode = props.mode;
-    const { code, codeName, language, editor } = useSelector(
+    const userId = JSON.parse(localStorage.getItem("userInfo")).pk
+    const history = useHistory();
+    const { problemId, code, codeName, language, editor, codeId } = useSelector(
       state => ({
+        problemId: state.problem.id,
         code: state.problem.code,
         codeName: state.problem.codeName,
         language: state.problem.language,
         editor: state.problem.editor,
+        codeId: state.problem.codeId
       }),
       shallowEqual
     );
@@ -43,22 +45,27 @@ function CodeEditor(props)  {
         code : code,
         language : languageList[language],
         problem: problemId,
-        name : codeName
+        name : codeName,
       }
       console.log("Post data==>", data)
       api.postCode(data)
       .then(response =>{
         dispatch(Action.submit(true))
         window.scrollTo(0, 0)
+        alert("제출 완료")
+        history.push({
+            pathname: "/code/my"
+        });
       })
       .catch(error => {
-        alert("제출 실패")
+        alert("제출 실")
       })
     }
 
     React.useEffect(() =>{
-      if(window.localStorage.getItem("codeMode") === "update"){
-          api.getCode(window.localStorage.getItem('selectedCodeId'))
+      if(codeId !== null){
+          console.log("codeid", codeId)
+          api.getCode(codeId)
           .then((response) => {
             console.log("data==>",response.data)
             dispatch(Action.writeCode(response.data.code));
@@ -71,24 +78,14 @@ function CodeEditor(props)  {
       }
       else{
 
+        console.log("no code id")
       }
+
     },[])
 
     return(
         <React.Fragment >
           <Grid.Row justifyContent="center " >
-            {/* <Grid.Col className="offsetSelect">
-            
-              <select value={languageId} padding-bottom="10px" 
-              onChange={(e) => {
-                dispatch(Action.setLanguage(e.target.value))
-              }}>
-                <option value="" selected disabled>Language</option>
-                <option value={1}>Python</option>
-                <option value={2}>C</option>
-                <option value={3}>C++</option>
-              </select>
-            </Grid.Col> */}
             <Grid.Col className="pt-2">
               <CodeMirror
               className="editor"
