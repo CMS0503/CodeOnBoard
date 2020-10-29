@@ -12,7 +12,7 @@ class PlacementRule:
             3: self.king, 4: self.pawn, 5: self.rook, 6: self.queen, 7: self.knight,
         }
 
-        self.problem_rules = []
+        self.problem_rule = None
 
     def check_placement_rule(self, game_data, placement_data):
         self.util = PlacementRuleUtil(game_data, placement_data)
@@ -31,17 +31,18 @@ class PlacementRule:
             print(e)
             return e
 
-        for rule in self.problem_rules:
-            if self.rules[rule]() is True:
-                self.util.update_board()
-                return 'OK', placement_data.board
+        # for rule in self.problem_rules:
+        if self.rules[self.problem_rule]() is True:
+            self.util.update_board()
+            return 'OK', placement_data.board
 
         return 'error', f'miss position: {placement_data.placement}'
 
     def set_problem_rule(self):
-        self.problem_rules.clear()
-        for rule in self.util.rule[1]:
-            self.problem_rules.append(int(rule))
+        self.problem_rule = int(self.util.rule[1])
+
+        # for rule in self.util.rule[1]:
+        #     self.problem_rules.append(int(rule))
 
     def segyun_add(self):
         return self.util.add_adjacent('eight')
