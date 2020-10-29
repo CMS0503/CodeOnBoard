@@ -29,6 +29,7 @@ class PlacementRule:
             print('OK')
         except Exception as e:
             print(e)
+            return e
 
         for rule in self.problem_rules:
             if self.rules[rule]() is True:
