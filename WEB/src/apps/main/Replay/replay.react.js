@@ -79,7 +79,7 @@ function Replay( {match} ) {
                                             </Table.Col>
                                                 {getWinner(replay.challenger, replay.opposite, replay.winner)}
                                             <Table.Col className="tb">
-                                                <ViewReplayPage tmp_id={replay.id}/>
+                                                <ViewReplayPage gameId={replay.id}/>
                                             </Table.Col>
                                         </Table.Row>
                                     )
