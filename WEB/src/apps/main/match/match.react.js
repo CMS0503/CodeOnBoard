@@ -150,16 +150,15 @@ function Match({match}) {
                if (result !== "playing"){
 
                 const winner = response.data.winner;
-
+                dispatch(Action.setIsMatching(false));
+                dispatch(Action.setGameStatus('게임 종료!'));
                 if (winner === "challenger"){
                     dispatch(Action.setGameResult('Win'));
                     dispatch(Action.setGameResult2('Lose'));
-                    dispatch(Action.setGameStatus('게임 종료!'));
                 }
                 else if (winner === "opposite"){
                     dispatch(Action.setGameResult('Lose'));
                     dispatch(Action.setGameResult2('Win'));
-                    dispatch(Action.setGameStatus('게임 종료!'));
                 }
                 else{
                     dispatch(Action.setGameStatus('Error'));

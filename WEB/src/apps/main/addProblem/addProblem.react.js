@@ -19,14 +19,14 @@ function AddProblem({match}) {
     return(
         <SiteWrapper>
             <Page.Content>
-                <ProblemInfo ></ProblemInfo>
+                <ProblemInfo />
                 <Nav>
                     <Nav.Item onClick={()=>dispatch(Action.selectStone(0))}> 1번 돌</Nav.Item>
                     <Nav.Item onClick={()=>dispatch(Action.selectStone(1))}> 2번 돌</Nav.Item>
                     <Nav.Item onClick={()=>dispatch(Action.selectStone(2))}> 3번 돌</Nav.Item>
                     <Nav.Item onClick={()=>dispatch(Action.selectStone(3))}> 4번 돌</Nav.Item>
                 </Nav>
-                <Stone selectedStone={selectedStone}></Stone>
+                <Stone selectedStone={selectedStone}/>
                 {/* <Button className="mt-5">문제 만들기</Button> */}
             </Page.Content>
             

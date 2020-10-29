@@ -54,10 +54,6 @@ function SiteWrapper( props ) {
     const pk = localStorage.getItem("userInfo")
         ? JSON.parse(localStorage.getItem("userInfo")).pk
         : null
-    // function logoutUser() {
-    //     localStorage.removeItem("userInfo")
-    //     return { type: LOGOUT_USER };
-    // }
 
     const accountDropdownProps = {
         avatarURL: "",
@@ -74,8 +70,8 @@ function SiteWrapper( props ) {
             ],
     };
     var navBarItems: Array<nvaItem>
-
-    pk!=="1"?
+    console.log(">>>>>", pk!==1)
+    pk!==1?
         navBarItems = [
             {
                 value: "Home",
@@ -116,7 +112,7 @@ function SiteWrapper( props ) {
             },
 
         ]
-        :
+        : // Admin
         navBarItems= [
         {
             value: "Home",
