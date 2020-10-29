@@ -7,7 +7,7 @@ export const SET_EDITOR = "SET_EDITOR"
 export const SET_TITLE = "SET_TITLE"
 export const SET_ID = "SET_ID"
 export const SET_CODELIST = "SET_CODELIST"
-
+export const SET_CODE_ID = "SET_CODE_ID"
 
 export function submit(param){
     return {
@@ -66,6 +66,13 @@ export function setId(param){
 export function setCodeList(param){
     return{
         type: SET_CODELIST,
+        payload: param
+    }
+}
+
+export function setCodeId(param){
+    return{
+        type: SET_CODE_ID,
         payload: param
     }
 }
