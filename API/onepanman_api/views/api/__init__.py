@@ -12,10 +12,9 @@ from .action_rule import ActionRuleViewSet
 from .ending_rule import EndingRuleViewSet
 
 # from .matchall import Matchall
-# from .selfBattle import SelfBattle
+from .selfBattle import SelfBattle
 
 __all__ = ['CodeViewSet', 'GameViewSet', 'GroupInfoViewSet',
            'GroupViewSet', 'LanguageViewSet', 'ProblemViewSet',
            'UserViewSet', 'UserInfoViewSet', 'Match',
-           'PlacementRuleViewSet', 'ActionRuleViewSet', 'EndingRuleViewSet']
-#, 'Matchall', 'SelfBattle']
+           'PlacementRuleViewSet', 'ActionRuleViewSet', 'EndingRuleViewSet', 'SelfBattle']
