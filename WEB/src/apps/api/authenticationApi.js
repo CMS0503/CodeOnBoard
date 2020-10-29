@@ -15,6 +15,7 @@ export async function obtainToken(username, password) {
     username,
     password,
   });
+
   console.log("===> rest-auth/login/", response)
 
   setNewHeaders(response);

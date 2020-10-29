@@ -22,8 +22,9 @@ export function loginUser(username, password) {
                 "userInfo",
                 JSON.stringify({
                 pk: response.data.user.pk,
-                userName: response.data.user.first_name,
-                accessToken: response.data.token
+                userName: response.data.user.username,
+                accessToken: response.data.token,
+                // refresh_token:
                 })
             )
         } catch (error) {
