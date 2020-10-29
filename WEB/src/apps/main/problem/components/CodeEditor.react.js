@@ -50,7 +50,7 @@ function CodeEditor()  {
       console.log("Post data==>", data)
       api.postCode(data)
       .then(response =>{
-        dispatch(Action.submit(true))
+        // dispatch(Action.submit(true))
         window.scrollTo(0, 0)
         alert("제출 완료")
         history.push({
