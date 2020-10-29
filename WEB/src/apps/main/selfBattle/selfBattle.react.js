@@ -31,8 +31,8 @@ const useStyles = makeStyles(theme => ({
 
 function SelfBattle(props){
     // temp game_id edit here!!!!!!!!!!!!!!!!!!!!!!!!!!
-    window.sessionStorage.setItem("codeId", props.codeId);
-    window.sessionStorage.setItem("problemId", props.problemId);
+    window.localStorage.setItem("codeId", props.codeId);
+    window.localStorage.setItem("problemId", props.problemId);
     // window.localStorage.setItem('game_id', 1959);
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);

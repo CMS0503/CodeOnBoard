@@ -30,7 +30,7 @@ function ViewReplayPage(props) {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
 	const [open, setOpen] = React.useState(false);
-	
+	localStorage.setItem("gameId", props.gameId)
 	const handleOpen = () => {
 		window.localStorage.setItem('selectedGameId', props.tmp_id);
 		setOpen(true);
