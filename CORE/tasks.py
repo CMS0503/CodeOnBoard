@@ -78,7 +78,7 @@ def play_with_me(data):
     print(json_data)
     volumes = {match_data_file_path: {'bind': '/testme.json', 'mode': 'rw'}}
     client.containers.run(image=docker_img, command='python3 play_with_me.py', volumes=volumes, auto_remove=True,
-                          privileged=True)
+                          privileged=True, network_mode='host')
 
 
 if __name__ == '__main__':

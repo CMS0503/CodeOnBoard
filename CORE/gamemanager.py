@@ -195,10 +195,11 @@ class GameManager:
             print('OK', output)
             # Start Check Rule
 
+            placement_data = PlacementData(output, self.board)
             # Check Placement Rule
             print('Check Placement Rule...', end='')
             try:
-                check_placement, new_board = self.placement_rule.check_placement_rule(self.game_data, self.board, output)
+                check_placement, new_board = self.rules.check_placement_rule(self.game_data, placement_data)
             except Exception as e:
                 self.error_msg = f'placement error : {e}'
                 print(self.error_msg)
@@ -211,7 +212,7 @@ class GameManager:
             # Check Action Rule
             print('Check action rule...', end='')
             try:
-                apply_action, new_board = self.action_rule.apply_action_rule(self.game_data, self.board, output)
+                apply_action, new_board = self.rules.apply_action_rule(self.game_data, placement_data)
             except Exception as e:
                 self.error_msg = f'action error : {e}'
                 print(self.error_msg)
@@ -224,7 +225,7 @@ class GameManager:
             # Check Ending Rule
             print('Check ending rule...', end='')
             try:
-                is_ending, winner = self.ending_rule.check_ending(self.game_data, self.board, output)
+                is_ending, winner = self.rules.check_ending(self.game_data, placement_data)
             except Exception as e:
                 print('errrrrrrrrror')
                 self.error_msg = f'ending error : {e}'
