@@ -46,7 +46,7 @@ function Match({match}) {
             score: state.match.score,
             language: state.match.language,
             thumbnail: state.match.thumbnail,
-            codeList: state.match.codeList,
+            codeList: state.problem.codeList,
             code: state.match.code,
             isMatching: state.match.isMatching,
             gameStatus: state.match.gameStatus,
@@ -211,12 +211,12 @@ function Match({match}) {
                                         },
                                         { isDivider: true },
                                         { 
-                                            value: Object.keys(codeList).length>0?codeList[Object.keys(codeList).length-2].name:"" ,
+                                            value: Object.keys(codeList).length>1?codeList[Object.keys(codeList).length-2].name:"" ,
                                             onClick:()=>{dispatch(Action.setCode(codeList[Object.keys(codeList).length-2]))}
                                         },
                                         { isDivider: true },
                                         { 
-                                            value: Object.keys(codeList).length>0?codeList[Object.keys(codeList).length-3].name:"" ,
+                                            value: Object.keys(codeList).length>2?codeList[Object.keys(codeList).length-3].name:"" ,
                                             onClick:()=>{dispatch(Action.setCode(codeList[Object.keys(codeList).length-3]))}
                                         },
                                     ]}>

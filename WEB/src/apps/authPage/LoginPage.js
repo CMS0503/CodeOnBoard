@@ -19,11 +19,9 @@ const LoginPage = ({ loginUser, history }) => {
   const login = async (event) => {
     console.log("======login")
     event.preventDefault();
-    // const _history = useHistory();
     const { email, password } = state;
 
     await loginUser(email, password);
-    // _history.push("/")
     history.push("/");
     window.location.reload(false);
   };
