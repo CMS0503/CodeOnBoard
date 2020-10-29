@@ -4,7 +4,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from onepanman_api.models import UserInformationInProblem, Problem, Code
+from onepanman_api.models import Problem, Code
+from django.contrib.auth.models import User
 
 from onepanman_api.permissions import selfBattlePermission
 
@@ -15,14 +16,13 @@ class SelfBattle(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        user = UserInformationInProblem.objects.all().filter(user=request.user.pk, problem=request.data['problem'])[0]
         code = Code.objects.all().filter(id=request.data['code'])[0]
         problem = Problem.objects.all().filter(id=request.data['problem'])[0]
         rule = json.loads(problem.rule)
         try:
             matchInfo = {
-                "challenger": user.user.pk,
-                "opposite": user.user.pk,
+                "challenger": request.user.pk,
+                "opposite": request.user.pk,
                 "challenger_code_id": code.id,
                 "opposite_code_id": code.id,
                 "challenger_code": code.code,
@@ -30,7 +30,6 @@ class SelfBattle(APIView):
                 "challenger_language": code.language.name,
                 "opposite_language": code.language.name,
                 "problem": problem.id,
-                "obj_num": rule["obj_num"],
                 "placement": rule["placement"],
                 "action": rule["action"],
                 "ending": rule["ending"],
@@ -46,8 +45,9 @@ class SelfBattle(APIView):
             result = tasks.play_with_me.delay(matchInfo)
 
             # redis로 받음
-            r = redis.StrictRedis(host="192.168.23.13", port=6379, db=0)
-            dict_name = str(user.user.pk) + '_' + str(code.id)
+            host = "localhost"
+            r = redis.StrictRedis(host=host, port=6379, db=0)
+            dict_name = str(request.user.pk) + '_' + str(code.id)
             print(dict_name)
 
             while r.exists(dict_name) == 0:
