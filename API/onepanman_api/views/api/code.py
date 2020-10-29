@@ -72,6 +72,16 @@ class CodeViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    def destroy(self, request, *args, **kwargs):
+        code = self.get_object()
+        print(">>>>>>>", code)
+        code.is_delete = True
+        code.save()
+
+        serializer = CodeSerializer(code)
+
+        return Response(serializer.data)
+
     def test_code(self, data):
 
         problem = Problem.objects.all().filter(id=data["problem"])[0]
@@ -105,15 +115,14 @@ class MyCodeView(APIView):
     pagination_class = CodePagination
 
     def get(self, request, version):
-
-        problemid = request.query_params.get('problem')
+        problemid = request.query_params['problem']
         if problemid is None:
-            queryset = Code.objects.all().filter(author=request.user.pk)
+            queryset = Code.objects.all().filter(author=request.user.pk, is_delete=False)
         else:
-            queryset = Code.objects.all().filter(author=request.user.pk, problem=problemid)
+            queryset = Code.objects.all().filter(author=request.user.pk, problem=problemid, is_delete=False)
 
         serializer = CodeSerializer(queryset, many=True)
-
+        print(">>>>>>>>>", len(queryset))
         for i in range(len(serializer.data)) :
             problem = Problem.objects.all().filter(id=serializer.data[i]['problem'])[0]
             serializer.data[i]['title'] = problem.title
