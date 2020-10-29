@@ -130,8 +130,8 @@ class Scene2 extends Phaser.Scene {
 
             // data to post
             let bodyData = {
-              "problem": window.sessionStorage.getItem("problemId"),
-              "code": window.sessionStorage.getItem("codeId"),
+              "problem": window.localStorage.getItem("problemId"),
+              "code": window.localStorage.getItem("codeId"),
               "board_info": boardInfo,
               "placement_info": this.moveAfter.length !== 0 ? this.moveBefore[0] + " " + this.moveBefore[1] + " > " + this.moveAfter[0] + " " + this.moveAfter[1] :"1 " + JSON.stringify(cellX) + " " + JSON.stringify(cellY),
             };

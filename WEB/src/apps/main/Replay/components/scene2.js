@@ -1,19 +1,11 @@
 import Phaser from 'phaser'
 import axios from 'axios'
 import Slider from 'phaser3-rex-plugins/plugins/slider.js';
-
+import * as api from "../../../api/api.react"
 const boardSize = 627;
 const modalWidth = 1050;
 const modalHeight = 700;
 var renderSpeed = 500;
-
-const version = {
-  'version': 'v1',
-}
-
-var header = {
-  'Authorization' : 'jwt ' + window.localStorage.getItem('jwt')
-}
 
 class Scene2 extends Phaser.Scene {
   constructor() {
@@ -30,13 +22,12 @@ class Scene2 extends Phaser.Scene {
       oppositeId: 0,
       idxIncrement: true,
     }
-    
-    axios.get(`http://203.246.112.32:8000/api/${version.version}/game/${window.localStorage.getItem('selectedGameId')}/`, { headers: header})
+
+    api.getGame(localStorage.getItem("gameId"))
     .then((response) => {
         // console.log(response)
         this.boardStatus.isError = response.data.error_msg;
         this.boardStatus.chacksoo = response.data.record.replace(/\n/gi, '').split(/ /);
-        console.log(this.boardStatus.chacksoo);
         this.boardStatus.placement = response.data.placement_record.split(/\n/);
         this.boardStatus.idxLen = this.boardStatus.chacksoo.length/64 - 2;
         this.boardStatus.challengerId = response.data.challenger;
@@ -47,7 +38,6 @@ class Scene2 extends Phaser.Scene {
       });
     }
     preload(){
-      console.log("========================> Scene1")
       this.load.image("background", "http://localhost:3000/assets/images/webGL/board.jpg");
       this.load.image("blue_boo", "http://localhost:3000/assets/images/webGL/blue_boo.png");
       this.load.image("pink_boo", "http://localhost:3000/assets/images/webGL/pink_boo.png");
@@ -355,5 +345,8 @@ class Scene2 extends Phaser.Scene {
           this.boardStatus.idxIncrement = true;
         }
       };
-    } 
+    }
+
+
+
   export default Scene2;
