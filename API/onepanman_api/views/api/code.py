@@ -23,7 +23,7 @@ class CodeViewSet(viewsets.ModelViewSet):
     filter_fields = ('author', 'problem', 'available_game',)
 
     # permission_classes = [CodePermission]
-    pagination_class = CodePagination
+    # pagination_class = CodePagination
 
     def create(self, request, *args, **kwargs):
         print('code create')
@@ -112,7 +112,7 @@ class CodeViewSet(viewsets.ModelViewSet):
 class MyCodeView(APIView):
 
     permission_classes = [CodePermission]
-    pagination_class = CodePagination
+    # pagination_class = CodePagination
 
     def get(self, request, version):
         problemid = request.query_params['problem']
