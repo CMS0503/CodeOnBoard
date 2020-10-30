@@ -10,9 +10,9 @@ class EndingRule(models.Model):
         ('option', 'option')
     )
 
-    type = models.CharField(
-        "TYPE",
-        db_column='TYPE',
+    type1 = models.CharField(
+        "TYPE1",
+        db_column='TYPE1',
         max_length=20,
         default='rule',
         choices=type_choice
@@ -32,10 +32,10 @@ class EndingRule(models.Model):
     )
 
     def __str__(self):
-        return f'{self.pk}_{self.type}_{self.rule_number}.{self.name}'
+        return f'{self.pk}_{self.type1}_{self.rule_number}.{self.name}'
 
     class Meta:
         db_table = "ENDING RULE"
-        ordering = ['pk', 'type', 'rule_number']
+        ordering = ['pk', 'type1', 'rule_number']
         verbose_name = "엔딩 규칙"
         verbose_name_plural = "엔딩 규칙"

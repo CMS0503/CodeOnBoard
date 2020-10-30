@@ -7,7 +7,7 @@ class EndingRuleAdmin(admin.ModelAdmin):
     """
     엔딩 규칙 정보
     """
-    list_display = ['pk', 'type', 'rule_number', 'name']
+    list_display = ['pk', 'type1', 'rule_number', 'name']
 
     class Meta:
         model = models.EndingRule
