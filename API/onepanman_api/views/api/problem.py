@@ -3,6 +3,8 @@ from rest_framework import viewsets, status
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from . import mixins
+from rest_framework.views import APIView
+from onepanman_api.models import Code
 
 from onepanman_api import serializers, models, pagination
 
@@ -12,13 +14,19 @@ class ProblemViewSet(mixins.VersionedSchemaMixin,
     queryset = models.Problem.objects.all()
     lookup_url_kwarg = 'id'
     serializer_class = serializers.ProblemSerializer
-    http_method_names = ['get', 'post', 'delete', 'put']
+    http_method_names = ['get', 'post', 'delete', 'put', 'patch']
 
     permission_classes = [ReadAll]
     parser_classes = (MultiPartParser, FormParser)
 
     def list(self, request, *args, **kwargs):
-        queryset = models.Problem.objects.all()
+        if request.query_params['my'] == 'true':
+            code_queryset = models.Code.objects.all().filter(author=request.user.pk, is_delete=False)\
+                .order_by('problem').distinct()
+            problems = list(set([code[2] for code in code_queryset.values_list()]))
+            queryset = models.Problem.objects.all().filter(id__in=problems, is_delete=False)
+        else:
+            queryset = models.Problem.objects.all().filter(is_delete=False)
         return self.get_response_list_for(queryset, serializers.ProblemSerializer)
 
     def retrieve(self, request, *args, **kwargs):
@@ -42,7 +50,6 @@ class ProblemViewSet(mixins.VersionedSchemaMixin,
                                                      limit_time=data['limit_time'],
                                                      limit_memory=data['limit_memory'],
                                                      thumbnail=data['thumbnail'],
-                                                     # board_size=data['board_size'],
                                                      board_info=data['board_info'],
                                                      rule=data['rule'])
 
@@ -75,14 +82,25 @@ class ProblemViewSet(mixins.VersionedSchemaMixin,
             print("problem update error : {}".format(e))
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
     def destroy(self, request, *args, **kwargs):
-        try:
-            models.Problem.objects.get(id=kwargs['id']).delete()
+        problem = self.get_object()
+        problem.is_delete = True
+        problem.save()
 
-        except Exception as e:
-            print("problem destroy error : {}".format(e))
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        serializer = serializers.ProblemSerializer(problem)
 
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data)
 
+class MyProblemView(APIView):
 
+    # permission_classes = [CodePermission]
+
+    # pagination_class = CodePagination
+
+    def get(self, request, version):
+        codes = Code.objects.all().filter(author=request.user.pk).order_by('problem').distinct()
+        print(codes.values_list())
+        serializer = serializers.CodeSerializer(codes, many=True)
+
+        return Response(serializer.data)
