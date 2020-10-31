@@ -82,7 +82,7 @@ class Problem(models.Model):
     rule = models.TextField(
         "문제 규칙",
         db_column="RULE",
-        default='{"placement": {} , "action": {}, "ending": {}}',
+        default='',
     )
 
     is_delete = models.BooleanField(

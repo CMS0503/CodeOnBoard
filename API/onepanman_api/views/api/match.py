@@ -78,15 +78,6 @@ class Match(APIView):
             print("fail to read rule information : {}".format(e))
             return {'error': 'rule 정보 가져오기 에러'}, 0
 
-        pr_queryset = PlacementRule.objects.all()
-        n = len(rule["placement"])
-        placement = rule["placement"]
-        for i in range(1, n+1):
-            prule = placement[str(i)]
-            rule_number = int(prule[1])
-            type2 = pr_queryset.filter(rule_number=rule_number)[0].type2
-            placement[str(i)][0] = type2
-
         matchInfo = {
             "challenger": challenger_id,
             "opposite": opposite_id,
@@ -97,9 +88,7 @@ class Match(APIView):
             "challenger_language": challenger_code.language.name,
             "opposite_language": opposite_code.language.name,
             "problem": int(problem_id),
-            "placement": placement,
-            "action": rule["action"],
-            "ending": rule["ending"],
+            "rule": rule,
             "board_size": problem.board_size,
             "board_info": problem.board_info,
             "challenger_name": challenger_code.author.username,

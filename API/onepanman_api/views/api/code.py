@@ -74,7 +74,6 @@ class CodeViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         code = self.get_object()
-        print(">>>>>>>", code)
         code.is_delete = True
         code.save()
 
@@ -95,9 +94,7 @@ class CodeViewSet(viewsets.ModelViewSet):
             "challenger": data['author'],
             "challenger_code": data['code'],
             "challenger_language": language.name,
-            "placement": rule["placement"],
-            "action": rule["action"],
-            "ending": rule["ending"],
+            "rule": rule,
             "board_size": problem.board_size,
             "board_info": problem.board_info,
             "problem": data["problem"]

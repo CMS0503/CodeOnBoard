@@ -30,9 +30,7 @@ class SelfBattle(APIView):
                 "challenger_language": code.language.name,
                 "opposite_language": code.language.name,
                 "problem": problem.id,
-                "placement": rule["placement"],
-                "action": rule["action"],
-                "ending": rule["ending"],
+                "rule": rule,
                 "board_size": problem.board_size,
                 "board_info": request.data['board_info'],
                 "placement_info": request.data['placement_info']
