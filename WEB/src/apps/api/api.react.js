@@ -1,6 +1,5 @@
 import axiosAPI from "./axiosApi";
 
-const authJWT = 'jwt ' + window.localStorage.getItem('access_token')
 
 export function register(username, email, password1, password2){
     console.log("regi", username, email, password1)
@@ -11,6 +10,21 @@ export function register(username, email, password1, password2){
                         email:email,
                       })
 }
+
+export function postProblem(data){
+    alert("post")
+    return axiosAPI.post(`api/v1/problem/`, data)
+}
+
+export function patchProblem(data, problemId){
+    alert("patch")
+    return axiosAPI.put(`api/v1/problem/${problemId}/`, data)
+}
+
+export function deleteProblem(problemId){
+    return axiosAPI.delete(`api/v1/problem/${problemId}/`, {})
+}
+
 export function getProblem(problemId){
     return axiosAPI.get(`/api/v1/problem/${problemId}/`,{})
 }
@@ -39,9 +53,8 @@ export function getGame(gameId){
     return axiosAPI.get(`/api/v1/game/${gameId}/`, {})
 }
 
-export function getProblems(){
-    console.log("getProblems")
-    return axiosAPI.get(`/api/v1/problem/`)
+export function getProblems(my){
+    return axiosAPI.get(`/api/v1/problem/`, { params: {my:my}})
 }
 
 export function postCode(data){
@@ -72,4 +85,13 @@ export function getGames(problemId){
 
 export function selfBattle(bodyData){
     return axiosAPI.post(`/api/v1/selfBattle`, bodyData, {})
+}
+
+export function getPlacementRuleList(){
+    return axiosAPI.get(`/api/v1/placementRule/`, {})
+}
+
+export function getActionRuleList(){
+    console.log('getActionRuleList')
+    return axiosAPI.get(`/api/v1/actionRule/`, {})
 }
