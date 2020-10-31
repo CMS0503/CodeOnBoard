@@ -1,10 +1,11 @@
 class PlacementRuleUtil:
 
     def __init__(self, game_data, placement_data):
-        self.rule = game_data.placement_rule[placement_data.obj_number]
+        self.rule = int(game_data.rule[int(placement_data.obj_number)-1]["placementRule"])
         self.placement = placement_data.placement
-        self.type = self.rule[0]
+        self.type = game_data.rule[int(placement_data.obj_number)-1]["type"]
         self.placement_type = placement_data.placement_type
+
 
         self.board = placement_data.board
         self.curr_x = placement_data.curr_x
@@ -16,14 +17,14 @@ class PlacementRuleUtil:
         self.placement_rule_option = {1: self.block_move, 2: self.remove}
 
         # add option
-        if self.rule[2]:
-            self.obj_option = self.rule[2]
+        # if self.rule[2]:
+        #     self.obj_option = self.rule[2]
 
     def check_type(self):  # type -> 0: add, 1: move, 2: add&move
-        if self.placement_type == 'add' and self.type == 1:
+        if self.placement_type == 'add' and self.type == "move":
             raise Exception(f'stone{self.obj_number}{self.next_x, self.next_y} cant move')
 
-        elif self.placement_type == 'move' and self.type == 0:
+        elif self.placement_type == 'move' and self.type == "add":
             raise Exception(f'stone{self.obj_number}{self.next_x, self.next_y} can only move')
 
     def check_base_rule(self):
@@ -35,13 +36,12 @@ class PlacementRuleUtil:
         elif self.board[self.next_x][self.next_y] > 0:
             raise Exception(f'There is already your stone: {self.placement}')
         elif self.board[self.next_x][self.next_y] < 0:  # catch enemy stone
-            if self.obj_option:
-                if 2 in self.obj_option:
-                    pass
-                else:
-                    raise Exception(f'There is already enemy stone: {self.placement}')
-            else:
-                raise Exception(f'There is already enemy stone: {self.placement}')
+            pass
+            # if self.obj_option:
+            #     if 2 not in self.obj_option:
+            #         raise Exception(f'There is already enemy stone: {self.placement}')
+            # else:
+            #     raise Exception(f'There is already enemy stone: {self.placement}')
 
     def check_in_range(self, num, min=0, max=None):
         if max is None:
@@ -59,7 +59,7 @@ class PlacementRuleUtil:
             dir = [(0, 1), (1, 0), (0, -1), (-1, 0)]
         elif direction == "DIAGONAL":
             dir = [(-1, 1), (1, 1), (1, -1), (-1, -1)]
-        elif direction == "eight":
+        elif direction == "EIGHT":
             dir = [(0, 1), (1, 0), (0, -1), (-1, 0), (-1, 1), (1, 1), (1, -1), (-1, -1)]
         for d in dir:
             x = self.next_x + d[0]
@@ -99,8 +99,6 @@ class PlacementRuleUtil:
         return False
 
     def update_board(self):
-        print(">>>>>>>>>>")
-        print(self.placement_type)
         if self.placement_type == 'move':
             self.board[self.curr_x][self.curr_y] = 0
             self.board[self.next_x][self.next_y] = self.obj_number

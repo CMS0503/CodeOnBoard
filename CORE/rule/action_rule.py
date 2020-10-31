@@ -19,7 +19,6 @@ class ActionRule:
         self.next_y = None
         self.obj_number = None
 
-        self.rule = None
         self.condition = None
         self.dir = None
         self.method = None
@@ -48,10 +47,9 @@ class ActionRule:
         self.next_y = placement_data.next_y
         self.obj_number = placement_data.obj_number
 
-        self.rule = game_data.action_rule[placement_data.obj_number]
-        self.condition = self.rule_condition[self.rule[0]]
-        self.dir = self.rule_direction[self.rule[1]]
-        self.method = self.rule_method[self.rule[2]]
+        self.condition = self.rule_condition[int(game_data.rule[int(placement_data.obj_number)-1]['actionCondition'])]
+        self.dir = self.rule_direction[int(game_data.rule[int(placement_data.obj_number)-1]['actionDir'])]
+        self.method = self.rule_method[int(game_data.rule[int(placement_data.obj_number)-1]['actionMethod'])]
 
     # condition
     def surround(self):

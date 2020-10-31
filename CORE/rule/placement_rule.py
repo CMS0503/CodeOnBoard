@@ -16,10 +16,12 @@ class PlacementRule:
 
     def check_placement_rule(self, game_data, placement_data):
         self.util = PlacementRuleUtil(game_data, placement_data)
+
         # game type check
         try:
             print('set problem rule...', end='')
             self.set_problem_rule()
+
             print('OK')
             print('check type...', end='')
             self.util.check_type()
@@ -32,29 +34,34 @@ class PlacementRule:
             return e
 
         # for rule in self.problem_rules:
-        if self.rules[self.problem_rule]() is True:
+        if self.rules[int(self.problem_rule)]() is True:
             self.util.update_board()
-            return 'OK', placement_data.board
 
-        return 'error', f'miss position: {placement_data.placement}'
+            return 'OK', placement_data.board
+        raise Exception(f'miss position: {placement_data.placement}')
 
     def set_problem_rule(self):
-        self.problem_rule = int(self.util.rule[1])
+        self.problem_rule = int(self.util.rule)
 
         # for rule in self.util.rule[1]:
         #     self.problem_rules.append(int(rule))
 
     def segyun_add(self):
-        return self.util.add_adjacent('eight')
+        return self.util.add_adjacent('EIGHT')
 
     def segyun_move(self):
         result = []
-        result.append(self.util.move(direction='EIGHT', distance=(2, 2)))
-        result.append(self.util.move(direction='CUSTOM', distance=(1, 2)))
-        result.append(self.util.move(direction='CUSTOM', distance=(2, 1)))
-
+        print(self.util.type)
+        if self.util.placement_type == 'add':
+            result.append(self.util.add_adjacent('EIGHT'))
+        else:
+            result.append(self.util.move(direction='EIGHT', distance=(2, 2)))
+            result.append(self.util.move(direction='CUSTOM', distance=(1, 2)))
+            result.append(self.util.move(direction='CUSTOM', distance=(2, 1)))
+        print('result:', result)
         if True in result:
             return True
+        return False
 
     def king(self):
         return self.util.move(direction='EIGHT', distance=(1, 1))

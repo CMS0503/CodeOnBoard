@@ -24,18 +24,25 @@ class EndingRule:
         self.ending_option = None
 
         self.flag = True
+        self.type = None
 
     def nothing(self):
         pass
 
-    def check_ending(self, game_data, placement_data):
-        self.setting(game_data, placement_data)
+    def set(self, game_data, placement_data):
+        self.game_data = game_data
+        self.board = np.array(placement_data.board)
 
-        if game_data.problem in (1, 2):
-            self.check_available_place()
-            if self.is_ending is True:
-                self.count_stone()
-                return self.is_ending, self.winner
+        self.rule = 1  # game_data.ending_rule
+        self.type = game_data.rule[int(placement_data.obj_number) - 1]["type"]
+
+    def check_ending(self, game_data, placement_data):
+        self.set(game_data, placement_data)
+        # if game_data.problem in (1, 2):
+        self.check_available_place()
+        if self.is_ending is True:
+            self.count_stone()
+            return self.is_ending, self.winner
 
         for function in self.base_ending_rule:
             function()
@@ -45,11 +52,7 @@ class EndingRule:
 
         return self.is_ending, 0
 
-    def setting(self, game_data, placement_data):
-        self.game_data = game_data
-        self.board = np.array(placement_data.board)
 
-        self.rule = game_data.ending_rule
 
     # 엔딩 조건
     def one_line(self, game_data, board, placement):  # TODO
@@ -121,8 +124,7 @@ class EndingRule:
                     poss2.append((x, y))
         available = None
         available2 = None
-        
-        if self.game_data.problem == 1:
+        if self.type == 'add':
             _, _, available = self.get_stones(poss, 0, 0)
             print('available', available)
         else:

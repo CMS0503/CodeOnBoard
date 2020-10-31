@@ -13,8 +13,6 @@ class PlacementData:
 
         self.set_placement()
 
-
-
     def set_placement(self):
         print('set placement')
         try:

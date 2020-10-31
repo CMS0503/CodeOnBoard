@@ -33,8 +33,7 @@ def play_with_me(data):
                              code_filename)
 
     game_manager = GameManager(challenger=challenger, oppositer=challenger,
-                               placement_rule=json_data['placement'], action_rule=json_data['action'],
-                               ending_rule=json_data['ending'],
+                               rule=json_data['rule'],
                                board_size=json_data['board_size'], board_info=json_data['board_info'],
                                problem=json_data['problem'])
 

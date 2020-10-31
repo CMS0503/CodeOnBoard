@@ -12,7 +12,7 @@ def test():
 
 class GameManager:
 
-    def __init__(self, challenger, oppositer, placement_rule, action_rule, ending_rule, board_size, board_info, problem):
+    def __init__(self, challenger, oppositer, rule, board_size, board_info, problem):
         self.board = np.zeros((board_size, board_size), dtype='i')
         self.board_info = board_info
         self.board_size = board_size
@@ -23,7 +23,7 @@ class GameManager:
         self.challenger = challenger
         self.opposite = oppositer
 
-        self.game_data = GameData(placement_rule, action_rule, ending_rule, board_size, board_info, problem)
+        self.game_data = GameData(rule, board_size, board_info, problem)
         self.rules = Rules()
 
         self.execution = Execution()
@@ -67,7 +67,6 @@ class GameManager:
                     # print('delete placement.txt')
                 if self.check_turn == 'challenger':
                     output = self.execution.execute_program(self.challenger.play(), self.challenger.save_path)
-                    print(">>>>>>>>>", output)
                 elif self.check_turn == 'opposite':
                     output = self.execution.execute_program(self.opposite.play(), self.opposite.save_path)
             except Exception as e:

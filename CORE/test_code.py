@@ -26,8 +26,7 @@ def test_code(data):
                              code_filename)
 
     game_manager = GameManager(challenger=challenger, oppositer=challenger,
-                               placement_rule=test_data['placement'], action_rule=test_data['action'],
-                               ending_rule=test_data['ending'],
+                               rule=test_data['rule'],
                                board_size=test_data['board_size'], board_info=test_data['board_info'],
                                problem=json_data['problem'])
 

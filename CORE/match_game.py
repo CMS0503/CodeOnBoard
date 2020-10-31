@@ -33,8 +33,7 @@ def match(data):
                             oppositer_code_filename)
 
     game_manager = GameManager(challenger=challenger, oppositer=oppositer,
-                               placement_rule=match_data['placement'], action_rule=match_data['action'],
-                               ending_rule=match_data['ending'],
+                               rule=match_data['rule'],
                                board_size=match_data['board_size'], board_info=match_data['board_info'],
                                problem=json_data['problem'])
 
