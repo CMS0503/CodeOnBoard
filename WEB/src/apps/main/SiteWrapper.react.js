@@ -14,7 +14,6 @@ import {
 
 import type { NotificationProps } from "tabler-react";
 import { useSelector, useDispatch } from "react-redux"
-import {LOGOUT_USER} from "../store/actions/auth.react";
 import * as Action from "../store/actions/auth.react"
 
 
@@ -66,7 +65,7 @@ function SiteWrapper( props ) {
             { isDivider: true },
             localStorage.getItem("userInfo")
             ? { icon: "log-out", value: "Sign out", to: "/", onClick:()=>{ dispatch(Action.logoutUser()) }}
-            : { icon: "log-in", value: "login" , to: "/login"}
+            : { icon: "log-in", value: "login" , to: "/login"}, { icon: "airplay", value: "register" , to: "/register"}
             ],
     };
     var navBarItems: Array<nvaItem>
@@ -90,7 +89,7 @@ function SiteWrapper( props ) {
                         LinkComponent: withRouter(NavLink),
                     },
                     { value: "내가 푼 문제",
-                        to: "/problem/user/{user_id}",
+                        to: "/problem-my",
                         LinkComponent: withRouter(NavLink) },
                 ],
             },
@@ -131,7 +130,7 @@ function SiteWrapper( props ) {
                     LinkComponent: withRouter(NavLink),
                 },
                 { value: "내가 푼 문제",
-                    to: "/problem/user/{user_id}",
+                    to: "/problem-my",
                     LinkComponent: withRouter(NavLink) },
             ],
         },
@@ -155,7 +154,7 @@ function SiteWrapper( props ) {
         {
             value: "Add Problem",
             icon: "file-plus",
-            to: "/addProblem2",
+            to: "/addProblem",
             LinkComponent: withRouter(NavLink),
         }
 
