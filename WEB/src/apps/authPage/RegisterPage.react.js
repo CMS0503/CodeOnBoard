@@ -11,7 +11,7 @@ import submitRegister from "../store/reducers/register.reducer";
 type Props = {||};
 
 
-function RegisterPage(props: Props): React.Node {
+function RegisterPage({history}): React.Node {
   const dispatch = useDispatch();
   const { name, email, password, password2 } = useSelector(
       state => ({
@@ -34,6 +34,7 @@ function RegisterPage(props: Props): React.Node {
   function submit(e){
       e.preventDefault()
       api.register(name, email, password, password2)
+      history.push("/");
   }
 
   return (

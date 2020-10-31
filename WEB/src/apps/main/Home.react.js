@@ -5,8 +5,6 @@ import "../../../node_modules/tabler-react/dist/Tabler.css"
 import {  GalleryCard, Button } from "tabler-react";
 
 import SiteWrapper from "./SiteWrapper.react";
-// import HomeImg from '../images/Home.jpeg'
-// import HomeImg from '/images/Home.jpeg'
 import './Home.css'
 
 function Home() {

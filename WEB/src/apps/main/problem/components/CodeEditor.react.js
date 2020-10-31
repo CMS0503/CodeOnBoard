@@ -10,10 +10,6 @@ import "../../../../../node_modules/codemirror/theme/material.css";
 import * as api from "../../../api/api.react";
 import { useHistory } from "react-router-dom";
 
-var header = {
-  'Authorization' : 'jwt ' + window.localStorage.getItem('jwt')
-}
-
 require('codemirror/theme/neat.css');
 require('codemirror/mode/python/python.js');
 require('codemirror/mode/clike/clike.js');
@@ -64,7 +60,6 @@ function CodeEditor()  {
 
     React.useEffect(() =>{
       if(codeId !== null){
-          console.log("codeid", codeId)
           api.getCode(codeId)
           .then((response) => {
             console.log("data==>",response.data)

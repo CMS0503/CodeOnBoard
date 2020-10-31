@@ -86,6 +86,11 @@
   max-width: 300px;
 }
 
+.input-lg{
+  width: 50%;
+  max-width: 200px;
+}
+
 .input-sm{
   max-width: 70px;
   max-height: 24px;

@@ -27,7 +27,6 @@ function Problem( {match , history} ) {
         _alert = <Alert type="success" icon="check">제출 완료</Alert>
     }
 
-    const _mode = window.localStorage.getItem("codeMode")
 
     function getCodeList(){
         api.getCodeList(userId, problemId)
