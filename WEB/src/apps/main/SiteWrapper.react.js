@@ -164,7 +164,7 @@ function SiteWrapper( props ) {
             headerProps={{
                 href: "/",
                 alt: "Code On Board",
-                imageURL: "http://localhost:3000/assets/images/logos/COB-B.png",
+                imageURL: "assets/images/logos/COB-B.png",
                 accountDropdown: accountDropdownProps,
             }}
             navProps={{ itemsObjects: navBarItems }}

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://127.0.0.1:8000" //"http://203.246.112.32:8000"
+const baseURL = "http://218.156.58.38:8000"
 const accessToken = localStorage.getItem("userInfo")
     ?"jwt " + JSON.parse(localStorage.getItem("userInfo")).accessToken
     :""

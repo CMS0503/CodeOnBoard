@@ -1,5 +1,6 @@
 import React from 'react';
 import { IonPhaser } from '@ion-phaser/react'
+import Scene1 from './components/Scene1'
 import Scene2 from './components/scene2'
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,7 +9,7 @@ import { Button } from "tabler-react";
 function getModalStyle() {
 	const top = 50 ;
 	const left = 50 ;
-  
+
 	return {
 	  top: `${top}%`,
 	  left: `${left}%`,
@@ -41,13 +42,13 @@ function ViewReplayPage(props) {
 		setOpen(false);
 	};
 
-	const game = {
-		width: 1050,
-		height: 700,
-		backgroundColor: 0x192d3f,
-		scene: [Scene2],
-		pixelArt: true,
-	}
+	const [game, setGame] = React.useState({
+        width: 1050,
+        height: 700,
+        backgroundColor: 0x192d3f,
+        scene: [Scene2],
+        pixelArt: true,
+    })
 	
 	return (
 		<div>

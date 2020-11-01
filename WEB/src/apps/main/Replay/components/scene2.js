@@ -38,11 +38,11 @@ class Scene2 extends Phaser.Scene {
       });
     }
     preload(){
-      this.load.image("background", "http://localhost:3000/assets/images/webGL/board.jpg");
-      this.load.image("blue_boo", "http://localhost:3000/assets/images/webGL/blue_boo.png");
-      this.load.image("pink_boo", "http://localhost:3000/assets/images/webGL/pink_boo.png");
-      this.load.image("me", "http://localhost:3000/assets/images/webGL/user.png");
-      this.load.image("you", "http://localhost:3000/assets/images/webGL/user2.png");
+      this.load.image("background", "/assets/images/webGL/board.jpg");
+      this.load.image("blue_boo", "/assets/images/webGL/blue_boo.png");
+      this.load.image("pink_boo", "/assets/images/webGL/pink_boo.png");
+      this.load.image("me", "/assets/images/webGL/user.png");
+      this.load.image("you", "/assets/images/webGL/user2.png");
       this.load.image('dot', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/white-dot.png'); // slider dot
     }
   

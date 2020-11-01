@@ -13,7 +13,7 @@ import * as Action2 from "../store/actions/addProblem.action"
 function ProblemList() {
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
-  const userId = JSON.parse(localStorage.getItem("userInfo")).pk
+  const userId = localStorage.getItem("userInfo")?JSON.parse(localStorage.getItem("userInfo")).pk:undefined
 
   React.useEffect(() => {
     console.log("====> userEffect")
