@@ -11,14 +11,12 @@ export function register(username, email, password1, password2){
                       })
 }
 
-export function postProblem(data){
-    alert("post")
-    return axiosAPI.post(`api/v1/problem/`, data)
+export function postProblem(data, config){
+    return axiosAPI.post(`api/v1/problem/`, data, config)
 }
 
-export function patchProblem(data, problemId){
-    alert("patch")
-    return axiosAPI.put(`api/v1/problem/${problemId}/`, data)
+export function patchProblem(data, problemId, config){
+    return axiosAPI.put(`api/v1/problem/${problemId}/`, data, config)
 }
 
 export function deleteProblem(problemId){

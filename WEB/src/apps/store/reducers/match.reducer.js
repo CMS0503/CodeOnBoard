@@ -1,7 +1,7 @@
 import { 
     SET_TIER,
     SET_SCORE,
-    SET_LANGUAGE,
+    SET_LANGUAGE1,
     SET_THUMBNAIL,
     GET_CODELIST,
     SET_CODE,
@@ -20,7 +20,7 @@ const initState = {
     // Challenger
     tier : null,
     score : null,
-    language : null,
+    language1 : null,
     thumbnail : null,
     codeList : {},
     code: {name:"Select your Code"},
@@ -45,8 +45,8 @@ const match = (state = initState, action) => {
             return {...state, tier:action.payload}
         case SET_SCORE:
             return {...state, score:action.payload}
-        case SET_LANGUAGE:
-            return {...state, language:action.payload}
+        case SET_LANGUAGE1:
+            return {...state, language1:action.payload}
         case SET_THUMBNAIL:
             return {...state, thumbnail:action.payload}
         case GET_CODELIST:

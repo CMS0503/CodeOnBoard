@@ -42,8 +42,7 @@ class GameManager:
         match_result = ''
         winner = 0
         output = None
-
-        self.board_record += str(self.board_info) + ' \n'
+        self.board_record += " ".join(self.board_info.splitlines()) + ' \n'
         self.board = self.parsing_board_info(self.board_info, self.board_size)
         self.compile_user_code()
 

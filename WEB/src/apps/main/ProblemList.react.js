@@ -46,7 +46,7 @@ function ProblemList() {
       <Grid.Col>
                 <Button color='primary'
                      onClick={()=>handlerEdit(props.id, props.mode)}
-                     RootComponent="a" href="/addproblem">수정{props.id}
+                     RootComponent="a" href="/addproblem">수정
                 </Button>
         </Grid.Col>
         <Grid.Col>

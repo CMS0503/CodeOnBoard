@@ -43,7 +43,7 @@ class ProblemViewSet(mixins.VersionedSchemaMixin,
             serializer = serializers.ProblemSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
-            print(self.request.user, request.user)
+
             instance = models.Problem.objects.create(editor=data['editor'],
                                                      title=data['title'],
                                                      description=data['description'],

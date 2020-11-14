@@ -69,7 +69,6 @@ function SiteWrapper( props ) {
             ],
     };
     var navBarItems: Array<nvaItem>
-    console.log(">>>>>", pk!==1)
     pk!==1?
         navBarItems = [
             {

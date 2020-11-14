@@ -32,6 +32,12 @@ function AddProblem({match}) {
         }
     },[]);
 
+    React.useEffect(()=>{
+        return function cleanup(){
+            dispatch({type: 'CLEAR'})
+        };
+    },[])
+
     return(
         <SiteWrapper>
             <Page.Content>

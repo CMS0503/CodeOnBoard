@@ -84,7 +84,7 @@ function Match({match}) {
         //    getUserTier(userid,problemid,type,response.data.username, language);
             
             challengerInfo = response.data.userInfo
-            dispatch(Action.setLanguage(challengerInfo.language))
+            dispatch(Action.setLanguage1(challengerInfo.language))
         
 
         })
@@ -175,7 +175,14 @@ function Match({match}) {
         }
     }, [isMatching])
     
-
+    React.useEffect(()=>{
+        return function cleanup(){
+            dispatch(Action.setUser2(null))
+            dispatch(Action.setLanguage1(null))
+            dispatch(Action.setLanguage2(null))
+            dispatch(Action.setGameStatus("기다리는중"))
+        };
+    },[])
 
     return(
         <SiteWrapper>

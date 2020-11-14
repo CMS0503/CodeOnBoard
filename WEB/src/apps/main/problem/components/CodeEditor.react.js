@@ -54,7 +54,7 @@ function CodeEditor()  {
         });
       })
       .catch(error => {
-        alert("제출 실")
+        alert("제출 실패")
       })
     }
 
@@ -72,10 +72,8 @@ function CodeEditor()  {
           })
       }
       else{
-
         console.log("no code id")
       }
-
     },[])
 
     return(

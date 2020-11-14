@@ -1,6 +1,6 @@
 export const SET_TIER = "SET_TIER"
 export const SET_SCORE = "SET_SCORE"
-export const SET_LANGUAGE = "SET_LANGUAGE"
+export const SET_LANGUAGE1 = "SET_LANGUAGE1"
 export const SET_THUMBNAIL = "SET_THUMBNAIL"
 export const GET_CODELIST = "GET_CODELIST"
 export const SET_CODE = "SET_CODE"
@@ -30,9 +30,9 @@ export function setScore(param){
     };
 }
 
-export function setLanguage(param){
+export function setLanguage1(param){
     return {
-        type: SET_LANGUAGE,
+        type: SET_LANGUAGE1,
         payload: param
     };
 }

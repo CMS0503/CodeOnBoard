@@ -1,15 +1,17 @@
 import * as React from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import * as Action from "../../../store/actions/addProblem.action"
-import { Text, Grid, Button} from "tabler-react";
+import { Grid, Button } from "tabler-react";
 import "../../Home.css"
 import axios from 'axios';
 import * as api from '../../../api/api.react'
 import { Form } from "react-bootstrap";
+import {useHistory} from "react-router-dom";
 
 function Stone(props){
     const dispatch = useDispatch();
     const userId = JSON.parse(localStorage.getItem("userInfo")).pk
+    const history = useHistory();
     const { mode, problemName, limitTime, limitMemory, initBoard, desc, thumbnail, placementRule,
         placementRuleList, actionRuleList,selectedStone, rules, problemId }
     = useSelector(
@@ -25,13 +27,13 @@ function Stone(props){
             placementRuleList:state.addProblem.placementRuleList,
             actionRuleList:state.addProblem.actionRuleList,
             rules:state.addProblem.rules,
-            problemId:state.problem.id
+            problemId:state.problem.id,
     }));
 
     React.useEffect(() => {
         api.getPlacementRuleList()
             .then(response => {
-                console.log('PR >>',response.data)
+                console.log('PR >>', response.data)
                 dispatch(Action.setPlacementRuleList(response.data.results))
             })
             .catch(error => {
@@ -57,7 +59,8 @@ function Stone(props){
 		}
     }
 
-    function problemPost(){
+    function problemPost(e){
+        e.preventDefault()
 		let frm = new FormData();
 
 		frm.append("editor", userId);
@@ -72,10 +75,19 @@ function Stone(props){
 		for (var pair of frm.entries()){
 			console.log(pair[0] + ': ' + pair[1]);
 		}
-
-		api.postProblem(frm)
+        const option = {
+		    onUploadProgress : (progressEvent) => {
+                const {loaded, total} = progressEvent;
+                let percent = Math.floor( loaded * 100 / total)
+                console.log( `${loaded}kb of ${total} | ${percent}%`);
+            }
+        }
+		api.postProblem(frm, option)
 		.then( response => {
 			alert("문제가 생성되었습니다.");
+			history.push({
+            pathname: "/problem"
+            });
 			console.log(response);
 		})
 		.catch(error => {
@@ -84,7 +96,8 @@ function Stone(props){
 		})
     }
 
-    function problemPatch(){
+    function problemPatch(e){
+        e.preventDefault()
         let frm = new FormData();
 
 		frm.append("editor", userId);
@@ -100,11 +113,19 @@ function Stone(props){
 		for (var pair of frm.entries()){
 			console.log(pair[0] + ': ' + pair[1]);
 		}
-
-		api.patchProblem(frm, problemId)
+        const option = {
+		    onUploadProgress : (progressEvent) => {
+                const {loaded, total} = progressEvent;
+                let percent = Math.floor( loaded * 100 / total)
+                console.log( `${loaded}kb of ${total} | ${percent}%`);
+            }
+        }
+		api.patchProblem(frm, problemId, option)
 		.then( response => {
-		    debugger
 			alert("문제가 수정되었습니다.");
+		    history.push({
+            pathname: "/problem"
+            });
 			console.log(response);
 		})
 		.catch(error => {
@@ -135,10 +156,10 @@ function Stone(props){
 
     function AddButton(props){
         if(mode === 'patch'){
-          return <Button color='primary' onClick={problemPatch}>문제 수정</Button>
+          return <Button className='mb-2' color='primary' onClick={problemPatch}>문제 수정</Button>
         }
         else{
-          return <Button color='primary' onClick={problemPost}>문제 만들기</Button>
+          return <Button className='mb-2' color='primary' onClick={problemPost}>문제 만들기</Button>
         }
       }
 

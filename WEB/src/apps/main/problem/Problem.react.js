@@ -49,6 +49,9 @@ function Problem( {match , history} ) {
         console.log("====>", window.localStorage.getItem("codeMode"))
         return function cleanup(){
             dispatch(Action.setCodeId(null))
+            dispatch(Action.writeCode(null))
+            dispatch(Action.writeCodeName(null))
+            dispatch(Action.setLanguage("Select Language"))
         };
     },[])
 
