@@ -6,7 +6,6 @@ class PlacementRuleUtil:
         self.type = game_data.rule[int(placement_data.obj_number)-1]["type"]
         self.placement_type = placement_data.placement_type
 
-
         self.board = placement_data.board
         self.curr_x = placement_data.curr_x
         self.curr_y = placement_data.curr_y

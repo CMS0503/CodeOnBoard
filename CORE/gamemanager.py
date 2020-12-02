@@ -124,12 +124,8 @@ class GameManager:
             print('\n' + '#######')
             self.make_board_data()
 
-            if i == 0:
-                print('Receive Borad')
-                print(self.board)
-
             # Execute user code
-            if i == 1:  # only code turn
+            if i == 1:  # code turn
                 try:
                     print('Execute user program...', end='')
                     # if os.path.isfile("placement.txt"):
@@ -139,11 +135,13 @@ class GameManager:
                     self.error_msg = f'Program error in execute user program : {e}'
                     print(self.error_msg)
                     break
-            else:
+            else:  # user turn
+                print('Receive Borad')
+                print(self.board)
                 print('User placement:', placement, '...', end='')
             print('OK', placement)
-            # Start Check Rule
 
+            # Start Check Rule
             placement_data = PlacementData(placement, self.board)
 
             self.error_msg, self.board, is_ending, winner = self.rules.check_rule(self.game_data, placement_data)

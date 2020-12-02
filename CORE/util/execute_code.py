@@ -8,6 +8,14 @@ class Execution:
         self.limit_time = limit_time
 
     def execute_program(self, command, path):
+        """
+        Execute user code
+
+        :param command: execute command
+        :type command: str
+        :param path: code path
+        :type path: str
+        """
         pid = os.fork()
         if pid == 0:
             # print('pid', pid)
@@ -22,13 +30,11 @@ class Execution:
             os.execv(command[0], tuple(command[1:]))
 
         else:
-            # print('else', pid)
             try:
                 result, time = self.trace_program(pid)
             except Exception as e:
                 os.kill(pid, signal.SIGSTOP)
                 raise Exception('Time Over')
-                # return 'time over'
 
             if '<' in command:
                 while not os.path.isfile("placement.txt"):
@@ -42,6 +48,14 @@ class Execution:
     
     @timeout.timeout(2)
     def trace_program(self, pid):
+        """
+        Trace running code for check running time
+        :param pid: code program id
+        :type pid: int
+        :return: time out
+        :rtype: bool
+        """
+
         while True:
             wpid, status, res = os.wait4(pid, 0)
             # normal termination

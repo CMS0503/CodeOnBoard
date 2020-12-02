@@ -14,6 +14,10 @@ class PlacementData:
         self.set_placement()
 
     def set_placement(self):
+        """
+        set placement data by user placement
+        """
+
         print('set placement')
         try:
             if '>' in self.placement:
@@ -41,6 +45,19 @@ class PlacementData:
             print(e)
 
     def check_in_range(self, num, min=0, max=None):
+        """
+        Check num is in range
+
+        :param num: number to check
+        :type num: int
+        :param min: min range
+        :type min: int
+        :param max: max range
+        :type max: int
+        :return: in range
+        :rtype: bool
+        """
+
         if max is None:
             max = len(self.board)
         return num in range(min, max)

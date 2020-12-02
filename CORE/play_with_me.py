@@ -44,6 +44,7 @@ def play_with_me(data):
 
     dict_name = str(json_data['challenger']) + '_' + str(json_data['challenger_code_id'])
 
+    # wait for api
     while r.exists(dict_name) == 1:
         pass
 
@@ -55,6 +56,8 @@ def play_with_me(data):
         'time': time.strftime('%m-%d-%H-%M-%S', time.localtime(time.time()))
     }
     print(result_dict)
+
+    # result to json
     json_result_dict = json.dumps(result_dict, ensure_ascii=False).encode('utf-8')
 
     # save to redis

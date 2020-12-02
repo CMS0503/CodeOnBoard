@@ -44,24 +44,16 @@ def match(data):
     # play game
     winner, board_record, placement_record, result, error_msg = game_manager.play_game()
 
-    # with open('result.txt', 'w') as f:
-    #    f.write(match_result)
-    # with open('result.txt', 'a') as f:
-    #    f.write(board_record)
-    # with open('result.txt', 'a') as f:
-    #    f.write(placement_record)
     data = {"winner": winner, "record": board_record, "placement_record": placement_record, "result": result,
             "error_msg": error_msg, "status": "OK"}
 
-    # print(data2)
-    print(update_url)
+    # patch to api
+    print(f'Patch to {update_url}')
     r = requests.patch(update_url, data=data)
     print('request ok')
 
 
 if __name__ == '__main__':
-    # json_data = json.loads(sys.argv[1])
-
     with open('matchdata.json') as json_file:
         json_data = json.load(json_file)
     match(json_data)
