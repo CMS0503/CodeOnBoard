@@ -1,13 +1,13 @@
 import axiosAPI from "./axiosApi";
 
 
-export function register(username, email, password1, password2){
-    console.log("regi", username, email, password1)
+export function register(state){ // TODO: param change to state
+    // console.log("regi", username, email, password1)
     return axiosAPI.post("rest-auth/registration/", {
-                        username:username,
-                        password1:password1,
-                        password2:password2,
-                        email:email,
+                        username:state.name,
+                        password1:state.password,
+                        password2:state.password2,
+                        email:state.email,
                       })
 }
 
