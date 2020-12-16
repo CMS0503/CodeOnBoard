@@ -17,7 +17,6 @@ const initState = {
     code : null,
     codeName : null,
     language : "Select Language",
-    editor: null,
     title:null,
     id: null,
     codeList: null,
@@ -36,8 +35,6 @@ const problem = (state = initState, action) => {
             return {...state, codeName:action.payload}
         case SET_LANGUAGE:
             return {...state, language:action.payload}
-        case SET_EDITOR:
-            return {...state, editor:action.payload}
         case SET_TITLE:
             return {...state, title:action.payload}
         case SET_ID:

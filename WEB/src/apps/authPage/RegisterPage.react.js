@@ -12,34 +12,27 @@ type Props = {||};
 
 
 function RegisterPage({history}): React.Node {
-  const dispatch = useDispatch();
-  const { name, email, password, password2 } = useSelector(
-      state => ({
-        name: state.submitRegister.name,
-        email: state.submitRegister.email,
-        password: state.submitRegister.password,
-        password2: state.submitRegister.password2,
-      }),
-      shallowEqual
-    );
+  const [state, setState] = useState({
+      name: "",
+      email: "",
+      password: "",
+      password2: "",
+  });
 
-  function change(e){
-      const { target: {name, vlaue} } = e
-      if(name === "name"){dispatch(Action.setName(e.target.value))}
-      else if(name === "email"){dispatch(Action.setEmail(e.target.value))}
-      else if(name === "password"){dispatch(Action.setPassword(e.target.value))}
-      else if(name === "password2"){dispatch(Action.setPassword2(e.target.value))}
-  }
+  const handleChange = (e) => {
+      const { name, value} = ee.target;
+      setState({ ...state, [name]: value});
+  };
 
   function submit(e){
       e.preventDefault()
-      api.register(name, email, password, password2)
+      api.register(state)
       history.push("/");
   }
 
   return (
       <React.Fragment >
-      <RegisterPage1 onChange={change} onSubmit={submit} imageURL=""/>
+      <RegisterPage1 onChange={handleChange} onSubmit={submit} imageURL=""/>
       </React.Fragment >
       );
 }

@@ -21,10 +21,13 @@ function Problem( {match , history} ) {
        problemDesc: state.problem.desc,
        problemId: state.problem.id
     }))
+    let title = undefined
+    let desc = undefined
+    // let .params.id
 
-    let _alert;
+    let submitAlert = undefined;
     if(problemIsSubmit === true){
-        _alert = <Alert type="success" icon="check">제출 완료</Alert>
+        submitAlert = <Alert type="success" icon="check">제출 완료</Alert>
     }
 
 
@@ -59,7 +62,7 @@ function Problem( {match , history} ) {
         <SiteWrapper>
             <Page.Content className="min-width">
             <ProblemNav id={match.params.id}/>
-            {_alert}
+            {submitAlert}
                 <Grid.Row>
                     <Grid.Col sm={6} lg={6} className="problem">
                         <ProblemViewer desc={problemDesc} />
