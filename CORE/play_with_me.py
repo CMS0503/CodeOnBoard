@@ -13,15 +13,14 @@ def play_with_me(data):
 
     extension = {'': '', 'C': '.c', 'C++': '.cpp', 'PYTHON': '.py', 'JAVA': '.java'}
 
+    # load user code
     code_filename = 'challenger{0}'.format(extension[json_data['challenger_language']])
-    # code_filename = 'challenger.py'
 
     code_path = os.path.join(pwm_dir, code_filename)
     placement_path = os.path.join(pwm_dir, 'placement.txt')
 
     code = json_data['challenger_code']
     placement = json_data['placement_info']
-    # placement = '0 4 > 0 5'
 
     with open(code_path, 'w') as f:
         f.write(code)
@@ -29,6 +28,7 @@ def play_with_me(data):
     with open(placement_path, 'w') as f:
         f.write(placement)
 
+    # match data formatting
     challenger = UserProgram('challenger', json_data['challenger'], json_data['challenger_language'], pwm_dir,
                              code_filename)
 
@@ -37,12 +37,14 @@ def play_with_me(data):
                                board_size=json_data['board_size'], board_info=json_data['board_info'],
                                problem=json_data['problem'])
 
+    # play game
     result, winner, board_record, placement_code = game_manager.play_with_me(placement)
     host = "localhost"
     r = redis.StrictRedis(host="localhost", port=6379, db=0)
 
     dict_name = str(json_data['challenger']) + '_' + str(json_data['challenger_code_id'])
 
+    # wait for api
     while r.exists(dict_name) == 1:
         pass
 
@@ -54,8 +56,13 @@ def play_with_me(data):
         'time': time.strftime('%m-%d-%H-%M-%S', time.localtime(time.time()))
     }
     print(result_dict)
+
+    # result to json
     json_result_dict = json.dumps(result_dict, ensure_ascii=False).encode('utf-8')
+
+    # save to redis
     r.set(dict_name, json_result_dict)
+
 
 if __name__ == '__main__':
     with open('testme.json') as json_file:

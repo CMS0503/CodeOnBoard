@@ -31,6 +31,17 @@ class ActionRule:
         pass
 
     def apply_action_rule(self, game_data, placement_data):
+        """
+        Function for apply action rule
+
+        :param game_data: game data(rule)
+        :type game_data: object
+        :param placement_data: placement & current board
+        :type placement_data: object
+        :return: result, update board
+        :rtype: str, 2d list of int
+        """
+
         self.setting(game_data, placement_data)
 
         self.method()
@@ -38,6 +49,10 @@ class ActionRule:
         return 'OK', self.board
 
     def setting(self, game_data, placement_data):
+        """
+        Set data for apply action
+
+        """
         self.game_data = game_data
         self.board = placement_data.board
 
@@ -56,6 +71,13 @@ class ActionRule:
         pass
 
     def adjacent(self):
+        """
+        get adjacent stones
+
+        :return: adjacent stones
+        :rtype: list of tuple
+        """
+
         self.dir()
         poses = []
         for d in self.dir_list:
@@ -83,6 +105,9 @@ class ActionRule:
         self.dir_list = [(0, 1), (1, 0), (0, -1), (-1, 0), (-1, 1), (1, 1), (1, -1), (-1, -1)]
 
     def reverse(self):
+        """
+        Reverse adjacent stones
+        """
         poses = self.adjacent()
         for pos in poses:
             if self.board[pos[0]][pos[1]] < 0:
@@ -90,12 +115,6 @@ class ActionRule:
 
     def remove(self):
         pass
-        # if self.board[self.x][self.y] < 0:
-        #     self.board[self.x1][self.y1] = 0
-        #     self.board[self.x][self.y] = self.obj_number
 
     def check_range(self, x, y):
-        if (0 <= x < len(self.board)) and (0 <= y < len(self.board)):
-            return False
-        else:
-            return True
+        return not (0 <= x < len(self.board)) and (0 <= y < len(self.board))

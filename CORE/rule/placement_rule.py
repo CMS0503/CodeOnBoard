@@ -9,12 +9,21 @@ class PlacementRule:
         self.util = None
         self.rules = {
             1: self.segyun_add, 2: self.segyun_move,
-            3: self.king, 4: self.pawn, 5: self.rook, 6: self.queen, 7: self.knight,
+            3: self.king, 4: self.pawn, 5: self.rook,
         }
 
         self.problem_rule = None
 
     def check_placement_rule(self, game_data, placement_data):
+        """
+        Check user placement is correct
+
+        :param game_data: rule data
+        :param placement_data: user placement, current board
+        :return: check result, update board
+        :rtype: str, 2d list of int
+        """
+        
         self.util = PlacementRuleUtil(game_data, placement_data)
 
         # game type check
@@ -33,7 +42,7 @@ class PlacementRule:
             print(e)
             return e
 
-        # for rule in self.problem_rules:
+        # execute placement rule function
         if self.rules[int(self.problem_rule)]() is True:
             self.util.update_board()
 
@@ -41,15 +50,30 @@ class PlacementRule:
         raise Exception(f'miss position: {placement_data.placement}')
 
     def set_problem_rule(self):
+        """
+        Set problem rule number
+        """
+
         self.problem_rule = int(self.util.rule)
 
-        # for rule in self.util.rule[1]:
-        #     self.problem_rules.append(int(rule))
-
     def segyun_add(self):
+        """
+        세균전 추가 규칙
+
+        :return: return True if user placement is right to this function
+        :rtype: bool
+        """
+
         return self.util.add_adjacent('EIGHT')
 
     def segyun_move(self):
+        """
+        세균전 이동 규칙
+
+        :return: return True if user placement is right to this function
+        :rtype: bool
+        """
+
         result = []
         print(self.util.type)
         if self.util.placement_type == 'add':
@@ -64,16 +88,31 @@ class PlacementRule:
         return False
 
     def king(self):
+        """
+        Chess king rule
+
+        :return: return True if user placement is right to this function
+        :rtype: bool
+        """
+
         return self.util.move(direction='EIGHT', distance=(1, 1))
 
     def pawn(self):
+        """
+        Chess pawn rule
+
+        :return: return True if user placement is right to this function
+        :rtype: bool
+        """
+
         return self.util.move(direction='CROSS', distance=(1, 1))
 
     def rook(self):
+        """
+        Chess rook rule
+
+        :return: return True if user placement is right to this function
+        :rtype: bool
+        """
+
         return self.util.move(direction='CROSS', distance=(0, 0))
-
-    def queen(self):
-        pass
-
-    def knight(self):
-        pass

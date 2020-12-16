@@ -30,6 +30,10 @@ class EndingRule:
         pass
 
     def set(self, game_data, placement_data):
+        """
+        Data setting
+
+        """
         self.game_data = game_data
         self.board = np.array(placement_data.board)
 
@@ -37,111 +41,104 @@ class EndingRule:
         self.type = game_data.rule[int(placement_data.obj_number) - 1]["type"]
 
     def check_ending(self, game_data, placement_data):
+        """
+        Check game is ending
+
+        :param game_data: rule data
+        :param placement_data: user placement, current board
+        :return: is ending, winner
+        :rtype: bool, int
+        """
+
         self.set(game_data, placement_data)
-        # if game_data.problem in (1, 2):
+
         self.check_available_place()
-        if self.is_ending is True:
+
+        if self.is_ending:
             self.count_stone()
             return self.is_ending, self.winner
 
         for function in self.base_ending_rule:
             function()
-            if self.is_ending is True:
+            if self.is_ending:
                 self.count_stone()
                 return self.is_ending, self.winner
 
         return self.is_ending, 0
 
-
-
-    # 엔딩 조건
-    def one_line(self, game_data, board, placement):  # TODO
-        print('######')
-
-        direction = np.array([[1, 0], [-1, 0], [1, 1], [-1, -1], [0, 1], [0, -1], [-1, 1], [1, -1]])
-        value = board[placement[0]][placement[1]]
-
-        direction_count = [1, 1, 1, 1]
-
-        for i in range(4):
-            x = placement[0]  # - 1
-            y = placement[1]  # - 1
-            new_value = value
-            while (0 < x < game_data.board_size) and (0 < y < game_data.board_size) and (new_value == value):
-                x += direction[i*2][1]
-                y += direction[i*2][0]
-                if x == game_data.board_size or y == game_data.board_size:
-                    break
-                new_value = board[x][y]
-                direction_count[i] += 1
-                if direction_count[i] == 5:
-                    self.ending_message = True
-                    print(direction_count)
-                    return self.ending_message, value
-
-            x = placement[0]  # - 1
-            y = placement[1]  # - 1
-            new_value = value
-            while (0 < x < game_data.board_size) and (0 < y < game_data.board_size) and (new_value == value):
-                x += direction[(i*2)+1][1]
-                y += direction[(i*2)+1][0]
-                if x == game_data.board_size or y == game_data.board_size:
-                    break
-                new_value = board[x][y]
-                direction_count[i] += 1
-                if direction_count[i] == 5:
-                    self.ending_message = True
-                    print('2', direction_count)
-                    return self.ending_message, value
-        return False, 0
-
-    # 보드판을 가득 채웠을 경우
     def full_board(self):
-        if np.any(self.board == 0) is False:
-            self.is_ending = True
+        """
+        Check board is full
+        """
+
+        self.is_ending = not np.any(self.board == 0)
 
     def only_one_side(self):
-        if np.any(self.board < 0) is False:
-            self.is_ending = True
+        """
+        Check there is only one user stone on board
+        """
 
-    # option
-    def one_line_num(self):
-        pass
+        self.is_ending = not np.any(self.board < 0)
 
     def check_range(self, x, y):
-        if (0 <= x < len(self.board)) and (0 <= y < len(self.board)):
-            return False
-        else:
-            return True
+        """
+        Check x,y in board range
+
+        :param x: placement x
+        :type x: int
+        :param y: placement y
+        :type y: int
+        :rtype: bool
+        """
+
+        return (0 <= x < len(self.board)) and (0 <= y < len(self.board))
     
     def check_available_place(self):
-        poss = []
-        poss2 = []
+        """
+        Check if there is a available placement position
+        
+        :return: available placement position
+        :rtype: bool
+        """
+        
+        pos = []
+        pos2 = []
         for x, line in enumerate(self.board):
             for y, i in enumerate(line):
                 if i < 0:
-                    poss.append((x, y))
-                    poss2.append((x, y))
+                    pos.append((x, y))
+                    pos2.append((x, y))
+
         available = None
         available2 = None
+
+        # available position for each rule type
         if self.type == 'add':
-            _, _, available = self.get_stones(poss, 0, 0)
+            _, available = self.get_stones(pos, 0, 0)
             print('available', available)
         else:
-            _, _, available = self.get_stones(poss, 0, 0)
-            _, _, available2 = self.get_stones(poss2, 0, 1)
+            _, available = self.get_stones(pos, 0, 0)
+            _, available2 = self.get_stones(pos2, 0, 1)
             print('available2', available2)
 
-        if available or available2:
-            pass
-        else:
+        if not (available or available2):
             self.is_ending = True
 
-    def get_stones(self, poss, whose, space):
-        # if space == 1:
-        #     print('my poss', poss)
-        eight_dir_poss = []
-        pos_r = None
+    def get_stones(self, pos, whose, space):
+        """
+        get available placement position
+        
+        :param pos: user's stones in board
+        :type pos: list of tuple
+        :param whose: num of user to get position
+        :type whose: int
+        :param space: distance of move
+        :type space: int
+        :return: result, available position
+        :rtype: bool, list of tuple
+        """
+
+        eight_dir_pos = []
         result = None
         x_list = []
         y_list = []
@@ -149,11 +146,11 @@ class EndingRule:
             x_list = y_list = [-1, 0, 1]
         elif space == 1:
             x_list = y_list = [-2, -1, 0, 1, 2]
-        while not eight_dir_poss:
-            if not poss:
+        while not eight_dir_pos:
+            if not pos:
                 break
-            pos = random.choice(poss)
-            poss.remove(pos)
+            pos = random.choice(pos)
+            pos.remove(pos)
             for x in x_list:
                 for y in y_list:
                     if space == 0:
@@ -164,30 +161,32 @@ class EndingRule:
                             continue
                     next_x = pos[0] + x
                     next_y = pos[1] + y
-                    # if space == 1:
-                    #     print(pos, (next_x, next_y))
                     if next_x > 7 or next_x < 0 or next_y > 7 or next_y < 0:
                         continue
                     if whose == 0:
                         if self.board[next_x][next_y] == 0:
                             # print(1,pos,next_x, next_y)
                             # print(self.board)
-                            eight_dir_poss.append((next_x, next_y))
+                            eight_dir_pos.append((next_x, next_y))
                             result = True
                     elif whose == 1:
                         if self.board[next_x][next_y] > 0:
                             # print(2,self.board[next_x][next_y])
-                            eight_dir_poss.append((next_x, next_y))
+                            eight_dir_pos.append((next_x, next_y))
                             result = True
                     elif whose == -1:
                         if self.board[next_x][next_y] < 0:
                             # print(3,self.board[next_x][next_y])
-                            eight_dir_poss.append((next_x, next_y))
+                            eight_dir_pos.append((next_x, next_y))
                             result = True
-            pos_r = pos
-        return result, pos_r, eight_dir_poss
+
+        return result, eight_dir_pos
 
     def count_stone(self):
+        """
+        Count both user stones to check winner
+        """
+
         if (self.board > 0).sum() > (self.board < 0).sum():
             self.winner = 1
         elif (self.board > 0).sum() < (self.board < 0).sum():
