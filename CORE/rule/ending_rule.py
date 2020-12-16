@@ -13,7 +13,7 @@ class EndingRule:
         self.placement_type = None
 
         self.winner = None
-        self.is_ending = False
+        self.playing = True
 
         self.board = None
         self.game_data = None
@@ -54,31 +54,31 @@ class EndingRule:
 
         self.check_available_place()
 
-        if self.is_ending:
+        if not self.playing:
             self.count_stone()
-            return self.is_ending, self.winner
+            return self.playing, self.winner
 
         for function in self.base_ending_rule:
             function()
-            if self.is_ending:
+            if not self.playing:
                 self.count_stone()
-                return self.is_ending, self.winner
+                return self.playing, self.winner
 
-        return self.is_ending, 0
+        return self.playing, 0
 
     def full_board(self):
         """
         Check board is full
         """
 
-        self.is_ending = not np.any(self.board == 0)
+        self.playing = np.any(self.board == 0)
 
     def only_one_side(self):
         """
         Check there is only one user stone on board
         """
 
-        self.is_ending = not np.any(self.board < 0)
+        self.playing = np.any(self.board < 0)
 
     def check_range(self, x, y):
         """
@@ -122,7 +122,7 @@ class EndingRule:
             print('available2', available2)
 
         if not (available or available2):
-            self.is_ending = True
+            self.playing = False
 
     def get_stones(self, pos, whose, space):
         """

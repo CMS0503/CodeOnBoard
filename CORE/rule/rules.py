@@ -41,9 +41,9 @@ class Rules(PlacementRule, ActionRule, EndingRule):
         # Check Ending Rule
         print('Check ending rule...', end='')
         try:
-            is_ending, winner = self.check_ending(game_data, placement_data)
+            playing, winner = self.check_ending(game_data, placement_data)
         except Exception as e:
             error_msg = f'Error check ending rule : {e}'
             return error_msg, None, True, 0
 
-        return None, new_board, is_ending, winner
+        return None, new_board, playing, winner

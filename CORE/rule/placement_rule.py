@@ -31,13 +31,11 @@ class PlacementRule:
             print('set problem rule...', end='')
             self.set_problem_rule()
 
-            print('OK')
             print('check type...', end='')
             self.util.check_type()
-            print('OK')
+
             print('check base rule...', end='')
             self.util.check_base_rule()
-            print('OK')
         except Exception as e:
             print(e)
             return e

@@ -6,11 +6,7 @@ import time
 from gamemanager import GameManager
 from util.userprogram import UserProgram
 
-
-def play_with_me(data):
-    json_data = data
-    pwm_dir = os.getcwd()
-
+def load_user_code(json_data, pwm_dir):
     extension = {'': '', 'C': '.c', 'C++': '.cpp', 'PYTHON': '.py', 'JAVA': '.java'}
 
     # load user code
@@ -28,7 +24,10 @@ def play_with_me(data):
     with open(placement_path, 'w') as f:
         f.write(placement)
 
-    # match data formatting
+    return code_filename
+
+
+def match_data_formatting(json_data, pwm_dir, code_filename):
     challenger = UserProgram('challenger', json_data['challenger'], json_data['challenger_language'], pwm_dir,
                              code_filename)
 
@@ -37,9 +36,9 @@ def play_with_me(data):
                                board_size=json_data['board_size'], board_info=json_data['board_info'],
                                problem=json_data['problem'])
 
-    # play game
-    result, winner, board_record, placement_code = game_manager.play_with_me(placement)
-    host = "localhost"
+    return game_manager
+
+def wait_for_nextTurn(result, winner, board_record, placement_code):
     r = redis.StrictRedis(host="localhost", port=6379, db=0)
 
     dict_name = str(json_data['challenger']) + '_' + str(json_data['challenger_code_id'])
@@ -62,6 +61,23 @@ def play_with_me(data):
 
     # save to redis
     r.set(dict_name, json_result_dict)
+
+
+def play_with_me(data):
+    json_data = data
+    pwm_dir = os.getcwd()
+
+    code_filename = load_user_code(json_data, pwm_dir)
+
+    # match data formatting
+    game_manager = match_data_formatting(json_data, pwm_dir,code_filename)
+
+    # play game
+    result, winner, board_record, placement_code = game_manager.play_with_me(placement)
+
+    wait_for_nextTurn(result, winner, board_record, placement_code)
+
+
 
 
 if __name__ == '__main__':
